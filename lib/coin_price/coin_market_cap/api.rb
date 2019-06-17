@@ -32,7 +32,7 @@ module CoinPrice
         end
 
         def requests_count(date = Time.now.strftime('%Y-%m-%d'))
-          CoinPrice.redis.get("#{CacheKey.requests_count}:#{date}") || 0
+          CoinPrice.redis.get("#{CacheKey.requests_count}:#{date}")&.to_i || 0
         end
 
         def request(url, options = {})
@@ -43,7 +43,10 @@ module CoinPrice
           retries = 0
           begin
             response = send_request(url, options)
-            parse_response_body(response)
+            check_response(response)
+            incr_requests_count
+
+            response[:body]
           rescue CoinPrice::RequestError
             raise
           rescue StandardError => e
@@ -57,19 +60,23 @@ module CoinPrice
 
         private
 
-        def send_request(url, options)
+        def send_request(url, options = {})
           response = HTTParty.get(url, options)
-          incr_requests_count
-          response
+          {
+            code: response.code,
+            body: JSON.parse(response.body)
+          }
         end
 
-        def parse_response_body(response)
-          body = JSON.parse(response.body)
-          unless response.ok? && body.dig('status', 'error_code').zero?
-            raise CoinPrice::RequestError, body.dig('status').to_h
-          end
+        def check_response(response)
+          code = response[:code]
 
-          body
+          error_code = response[:body].dig('status', 'error_code')
+          error_message = response[:body].dig('status', 'error_message')
+
+          unless code == 200 && error_code&.zero?
+            raise CoinPrice::RequestError, "#{code}: (#{error_code}) #{error_message}"
+          end
         end
 
         def incr_requests_count(date = Time.now.strftime('%Y-%m-%d'))

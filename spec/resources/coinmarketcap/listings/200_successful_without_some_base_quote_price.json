@@ -1,0 +1,121 @@
+{
+    "data": [
+        {
+            "circulating_supply": 17766262,
+            "cmc_rank": 1,
+            "date_added": "2013-04-28T00:00:00.000Z",
+            "id": 1,
+            "last_updated": "2019-06-18T17:03:27.000Z",
+            "max_supply": 21000000,
+            "name": "Bitcoin",
+            "num_market_pairs": 7602,
+            "platform": null,
+            "quote": {
+                "0": {
+                    "last_updated": "2019-06-18T17:03:27.000Z",
+                    "market_cap": 160678119468.88858,
+                    "percent_change_1h": -0.44222,
+                    "percent_change_24h": -2.11269,
+                    "percent_change_7d": 15.0024,
+                    "price": 9044.00258585,
+                    "volume_24h": 15391032437.9696
+                }
+            },
+            "slug": "bitcoin",
+            "symbol": "BTC",
+            "tags": [
+                "mineable"
+            ],
+            "total_supply": 17766262
+        },
+        {
+            "circulating_supply": 106542954.3116,
+            "cmc_rank": 2,
+            "date_added": "2015-08-07T00:00:00.000Z",
+            "id": 1027,
+            "last_updated": "2019-06-18T17:04:18.000Z",
+            "max_supply": null,
+            "name": "Ethereum",
+            "num_market_pairs": 5376,
+            "platform": null,
+            "quote": {
+                "USD": {
+                    "last_updated": "2019-06-18T17:04:18.000Z",
+                    "market_cap": 28315646879.35793,
+                    "percent_change_1h": -0.51767,
+                    "percent_change_24h": -2.24076,
+                    "percent_change_7d": 9.29066,
+                    "price": 265.767427441,
+                    "volume_24h": 5793208173.8931
+                }
+            },
+            "slug": "ethereum",
+            "symbol": "ETH",
+            "tags": [
+                "mineable"
+            ],
+            "total_supply": 106542954.3116
+        },
+        {
+            "circulating_supply": 42501950124,
+            "cmc_rank": 3,
+            "date_added": "2013-08-04T00:00:00.000Z",
+            "id": 52,
+            "last_updated": "2019-06-18T17:04:03.000Z",
+            "max_supply": 100000000000,
+            "name": "XRP",
+            "num_market_pairs": 425,
+            "platform": null,
+            "quote": {
+                "USD": {
+                    "last_updated": "2019-06-18T17:04:03.000Z",
+                    "market_cap": 18163699158.187103,
+                    "percent_change_1h": -1.41243,
+                    "percent_change_24h": -0.455734,
+                    "percent_change_7d": 9.03106,
+                    "price": 0.427361547063,
+                    "volume_24h": 2348549117.59407
+                }
+            },
+            "slug": "ripple",
+            "symbol": "XRP",
+            "tags": [],
+            "total_supply": 99991601899
+        },
+        {
+            "circulating_supply": 62280925.4246447,
+            "cmc_rank": 4,
+            "date_added": "2013-04-28T00:00:00.000Z",
+            "id": 2,
+            "last_updated": "2019-06-18T17:04:04.000Z",
+            "max_supply": 84000000,
+            "name": "Litecoin",
+            "num_market_pairs": 566,
+            "platform": null,
+            "quote": {
+                "USD": {
+                    "last_updated": "2019-06-18T17:04:04.000Z",
+                    "market_cap": 8271723381.699632,
+                    "percent_change_1h": -0.815048,
+                    "percent_change_24h": -1.36297,
+                    "percent_change_7d": 0.667951,
+                    "price": 132.813109717,
+                    "volume_24h": 3405903355.32702
+                }
+            },
+            "slug": "litecoin",
+            "symbol": "LTC",
+            "tags": [
+                "mineable"
+            ],
+            "total_supply": 62280925.4246447
+        }
+    ],
+    "status": {
+        "credit_count": 1,
+        "elapsed": 5,
+        "error_code": 0,
+        "error_message": null,
+        "timestamp": "2019-06-18T17:04:31.659Z"
+    }
+}

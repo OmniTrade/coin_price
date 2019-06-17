@@ -93,7 +93,7 @@ module CoinPrice
       def requests_foreach_quote
         responses = {}
         quotes.each do |quote|
-          sleep 1
+          sleep options[:wait].to_i
           responses[quote] = API.request(url(quote))
         end
         responses

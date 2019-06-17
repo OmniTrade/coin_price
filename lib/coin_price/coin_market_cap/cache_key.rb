@@ -7,7 +7,7 @@ module CoinPrice
         end
 
         def requests_count
-          "#{CacheKey}:requests_count"
+          "#{CacheKey}:requests-count"
         end
 
         def value

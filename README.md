@@ -96,24 +96,25 @@ CoinPrice.listings(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'], 'coinmar
 ```
 
 Cache keys in Redis follow the pattern:
-- `coin_price:{source}:value:{base}:{quote}`
-- `coin_price:{source}:timestamp:{base}:{quote}`
+- `coin-price:{source}:value:{base}:{quote}`
+- `coin-price:{source}:timestamp:{base}:{quote}`
 
 Example:
 ```sh
 $ redis-cli
-> get coin_price:coinmarketcap:value:BTC:USD
+> get coin-price:coinmarketcap:value:BTC:USD
 > "0.901072379743e4"
-> get coin_price:coinmarketcap:timestamp:BTC:USD
+> get coin-price:coinmarketcap:timestamp:BTC:USD
 > "1560720768"
 ```
 
-There is also a requests count at `coin_price:{source}:requests_count:{date}`
+There is also a requests count at:
+- `coin-price:{source}:requests-count:{date}`
 
 Example:
 ```sh
 $ redis-cli
-> get coin_price:coinmarketcap:requests_count:2019-06-16
+> get coin-price:coinmarketcap:requests-count:2019-06-16
 > "6"
 ```
 

@@ -1,7 +1,7 @@
 module CoinPrice
   class << self
     def cache_key
-      "#{config.cache_key_prefix}coin_price"
+      "#{config.cache_key_prefix}coin-price"
     end
 
     def redis

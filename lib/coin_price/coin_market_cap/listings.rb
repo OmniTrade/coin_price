@@ -52,7 +52,7 @@ module CoinPrice
         "#{API.endpoint}/cryptocurrency/listings/latest"
       end
 
-      def url(quote, limit = 500)
+      def url(quote, limit = CoinPrice.config.listings_limit)
         convert = API.code_id(quote) ? "convert_id=#{API.code_id(quote)}" : "convert=#{quote}"
         limit = "limit=#{limit}" # maximum limit is 5_000
 

@@ -16,7 +16,7 @@ module CoinPrice
       @redis = Redis.new(url: @redis_url)
     end
 
-    def latest(base = 'BTC', quote = 'USD', source = 'coinmarketcap', options = { from_cache: false })
+    def latest(base = 'BTC', quote = 'USD', source = CoinPrice.config.default_source, options = { from_cache: false })
       case source
       when 'coinmarketcap'
         CoinMarketCap::Latest.call(base, quote, options)
@@ -25,7 +25,7 @@ module CoinPrice
       end
     end
 
-    def listings(bases = ['BTC'], quotes = ['USD'], source = 'coinmarketcap', options = { from_cache: false })
+    def listings(bases = ['BTC'], quotes = ['USD'], source = CoinPrice.config.default_source, options = { from_cache: false })
       case source
       when 'coinmarketcap'
         CoinMarketCap::Listings.call(bases, quotes, options)
@@ -34,7 +34,7 @@ module CoinPrice
       end
     end
 
-    def requests_count(source = 'coinmarketcap')
+    def requests_count(source = CoinPrice.config.default_source)
       case source
       when 'coinmarketcap'
         CoinMarketCap::API.requests_count

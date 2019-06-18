@@ -1,0 +1,9 @@
+{
+    "status": {
+        "timestamp": "2019-06-18T17:32:12.036Z",
+        "error_code": 429,
+        "error_message": "You have exceeded your API rate limit",
+        "elapsed": 0,
+        "credit_count": 0
+    }
+}

@@ -15,6 +15,7 @@ module CoinPrice
 
   class Config
     attr_accessor :redis_url,
+                  :default_source,
                   :cache_key_prefix,
                   :max_request_retries,
                   :refresher_wait,
@@ -24,11 +25,14 @@ module CoinPrice
 
     def initialize
       @redis_url = 'redis://localhost:6379/0'
-      @cache_key_prefix = ''
+      @default_source = 'coinmarketcap'
       @max_request_retries = 3
+      @cache_key_prefix = ''
+
       @refresher_wait = 60 # seconds
       @refresher_wait_weekday_multiplier = 1
       @refresher_wait_weekend_multiplier = 1
+
       @coinmarketcap_api_key = nil
     end
   end

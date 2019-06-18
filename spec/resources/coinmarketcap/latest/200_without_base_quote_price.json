@@ -1,0 +1,22 @@
+{
+    "status": {
+        "timestamp": "2019-06-17T16:54:57.211Z",
+        "error_code": 0,
+        "error_message": null,
+        "elapsed": 4,
+        "credit_count": 1
+    },
+    "data": {
+        "id": 1,
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "amount": 1,
+        "last_updated": "2019-06-17T16:54:26.000Z",
+        "quote": {
+            "0": {
+                "price": 9216.02631123,
+                "last_updated": "2019-06-17T16:54:26.000Z"
+            }
+        }
+    }
+}

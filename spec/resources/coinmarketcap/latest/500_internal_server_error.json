@@ -1,0 +1,9 @@
+{
+    "status": {
+        "timestamp": "2019-06-17T19:33:57.143Z",
+        "error_code": 500,
+        "error_message": "An internal server error occurred",
+        "elapsed": 0,
+        "credit_count": 0
+    }
+}

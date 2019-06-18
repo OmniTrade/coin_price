@@ -7,7 +7,7 @@ module CoinPrice
                   :wait_weekday_multiplier,
                   :wait_weekend_multiplier
 
-    def initialize(bases = ['BTC'], quotes = ['USD'], source = 'coinmarketcap')
+    def initialize(bases = ['BTC'], quotes = ['USD'], source = CoinPrice.config.default_source)
       @bases = bases.map { |base|  base.to_s.upcase }
       @quotes = quotes.map { |quote| quote.to_s.upcase }
       @source = source.to_s.downcase
@@ -17,7 +17,7 @@ module CoinPrice
       @wait_weekend_multiplier = CoinPrice.config.refresher_wait_weekend_multiplier
     end
 
-    def self.call(bases = ['BTC'], quotes = ['USD'], source = 'coinmarketcap')
+    def self.call(bases = ['BTC'], quotes = ['USD'], source = CoinPrice.config.default_source)
       Refresher.new(bases, quotes, source).run
     end
 

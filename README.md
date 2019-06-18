@@ -14,7 +14,7 @@ Build and install the gem:
 
 ```sh
 gem build coin_price.gemspec
-gem install coin_price-0.1.0.gem
+gem install coin_price-1.0.0.gem
 ```
 
 Require it in your Ruby code and `CoinPrice` module will be available.
@@ -55,7 +55,7 @@ Get list of latest prices
 -------------------------
 
 ```ruby
-# Listings many latest prices at once
+# List many latest prices at once
 CoinPrice.listings(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 # => {
 #   "BTC" => {
@@ -84,8 +84,8 @@ CoinPrice.listings(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 Cache
 -----
 
-All fetched prices are stored in Redis and can be used instead sending another
-request to the API:
+All fetched prices are stored in Redis and can be used instead of sending
+another request to the API:
 
 ```ruby
 CoinPrice.latest('BTC', 'USD', 'coinmarketcap', from_cache: true)
@@ -133,3 +133,8 @@ CoinPrice::Refresher.call(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 # Awake! Refreshing prices...
 # Done refreshing prices! Sleeping...
 ```
+
+Tests
+-----
+
+Run tests with `bundle exec rspec`

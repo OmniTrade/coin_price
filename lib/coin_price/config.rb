@@ -17,26 +17,15 @@ module CoinPrice
     attr_accessor :redis_url,
                   :cache_key_prefix,
                   :default_source,
-                  :listings_limit,
-                  :max_request_retries,
-                  :refresher_wait,
-                  :refresher_wait_weekday_multiplier,
-                  :refresher_wait_weekend_multiplier,
-                  :coinmarketcap_api_key
+                  :wait_between_requests,
+                  :max_request_retries
 
     def initialize
       @redis_url = 'redis://localhost:6379/0'
       @cache_key_prefix = ''
-
       @default_source = 'coinmarketcap'
-      @listings_limit = 200
+      @wait_between_requests = 1 # seconds
       @max_request_retries = 3
-
-      @refresher_wait = 60 # seconds
-      @refresher_wait_weekday_multiplier = 1
-      @refresher_wait_weekend_multiplier = 1
-
-      @coinmarketcap_api_key = nil
     end
   end
 end

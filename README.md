@@ -15,7 +15,7 @@ Build and install the gem locally:
 
 ```sh
 gem build coin_price.gemspec
-gem install coin_price-2.0.0.gem
+gem install coin_price-2.1.0.gem
 ```
 
 Or install it from `rubygems.org` in your terminal:
@@ -31,7 +31,7 @@ source 'https://rubygems.org'
 
 ruby '~> 2.5'
 
-gem 'coin_price', '~> 2.0'
+gem 'coin_price', '~> 2.1'
 ```
 
 Require it in your Ruby code and `CoinPrice` module will be available.

@@ -13,3 +13,9 @@ require_relative '../lib/coin_price'
 
 require 'fakeredis/rspec'
 require 'pry'
+
+RSpec.configure do |config|
+  config.before(:example) do
+    CoinPrice.cache_reset
+  end
+end

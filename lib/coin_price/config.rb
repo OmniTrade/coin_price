@@ -14,18 +14,16 @@ module CoinPrice
   end
 
   class Config
-    attr_accessor :redis_url,
+    attr_accessor :redis_enabled,
+                  :redis_url,
                   :cache_key_prefix,
-                  :default_source,
-                  :wait_between_requests,
-                  :max_request_retries
+                  :default_source
 
     def initialize
+      @redis_enabled = true
       @redis_url = 'redis://localhost:6379/0'
       @cache_key_prefix = ''
       @default_source = 'coinmarketcap'
-      @wait_between_requests = 1 # seconds
-      @max_request_retries = 3
     end
   end
 end

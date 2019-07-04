@@ -25,7 +25,7 @@ module CoinPrice
     def values=(new_values)
       new_values.each do |base, quotes|
         quotes.each do |quote, value|
-          CoinPrice.redis.set(cache_key_value(base, quote), value)
+          CoinPrice.cache.set(cache_key_value(base, quote), value)
         end
       end
     end
@@ -35,7 +35,7 @@ module CoinPrice
       bases.each do |base|
         result[base] = {}
         quotes.each do |quote|
-          result[base][quote] = CoinPrice.redis.get(cache_key_timestamp(base, quote)).to_i || 0
+          result[base][quote] = CoinPrice.cache.get(cache_key_timestamp(base, quote)).to_i || 0
         end
       end
       result
@@ -44,7 +44,7 @@ module CoinPrice
     def timestamps=(new_timestamp)
       bases.each do |base|
         quotes.each do |quote|
-          CoinPrice.redis.set(cache_key_timestamp(base, quote), new_timestamp)
+          CoinPrice.cache.set(cache_key_timestamp(base, quote), new_timestamp)
         end
       end
     end
@@ -63,7 +63,7 @@ module CoinPrice
         result[base] = {}
         quotes.each do |quote|
           result[base][quote] = \
-            CoinPrice.redis.get(cache_key_value(base, quote))&.to_d ||
+            CoinPrice.cache.get(cache_key_value(base, quote))&.to_d ||
             (raise CoinPrice::CacheError, "#{base}/#{quote}: #{cache_key_value(base, quote)}")
         end
       end

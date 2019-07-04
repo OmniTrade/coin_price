@@ -23,8 +23,8 @@ module CoinPrice
       def initialize
         @api_key = nil
         @listings_limit = 200 # maximum limit is 5_000
-        @wait_between_requests = CoinPrice.config.wait_between_requests
-        @max_request_retries = CoinPrice.config.max_request_retries
+        @wait_between_requests = 1 # seconds
+        @max_request_retries = 3
       end
     end
   end

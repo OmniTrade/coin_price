@@ -7,10 +7,8 @@ describe CoinPrice do
   let(:quotes) { ['AAA', 'XXX'] }
 
   let(:source) { 'any-source' }
-  let(:source_klass) do
-    class AnySource < CoinPrice::Source; end
-    AnySource
-  end
+  class AnySource < CoinPrice::Source; end
+  let(:source_klass) { AnySource }
   let(:options) { { any_option: 'any_value' } }
 
   describe '.value' do

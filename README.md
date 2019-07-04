@@ -53,11 +53,11 @@ end
 
 List of configuration values:
 
-- `redis_enabled`: whether or not Redis should be used to cache values (defaults to `true`;
+- `redis_enabled`: whether or not Redis should be used to cache values
+  (defaults to `true`; and if set to `false` then values will be cached in local memory)
 - `redis_url`: the Redis URL to cache values (defaults to `'redis://localhost:6379/0'`)
-  and if set to `false` then values will be cached in local memory)
 - `cache_key_prefix`: a custom prefix to be used in Redis/hash keys (defaults to an empty string)
-- `default_source`: the default price Source to used when none is specified (defaults to `'coinmarketcap'`)
+- `default_source`: the default price Source to be used when none is specified (defaults to `'coinmarketcap'`)
 
 (See `Config` class at `lib/coin_price/config.rb` for the up to date list of
 configuration values)
@@ -69,9 +69,9 @@ Price Sources
 
 ### CoinMarketCap
 
-ID: `'coinmarketcap'`
-Name: CoinMarketCap
-Website: https://coinmarketcap.com
+- ID: `'coinmarketcap'`
+- Name: CoinMarketCap
+- Website: https://coinmarketcap.com
 
 `CoinPrice::CoinMarketCap` supports configuration with the `.configure` method.
 

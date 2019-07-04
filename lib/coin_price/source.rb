@@ -43,11 +43,11 @@ module CoinPrice
     end
 
     def incr_requests_count(number = 1, date = Time.now.strftime('%Y-%m-%d'))
-      CoinPrice.redis.incrby(cache_key_requests_count(date), number)
+      CoinPrice.cache.incrby(cache_key_requests_count(date), number)
     end
 
     def requests_count(date = Time.now.strftime('%Y-%m-%d'))
-      CoinPrice.redis.get(cache_key_requests_count(date))&.to_i || 0
+      CoinPrice.cache.get(cache_key_requests_count(date))&.to_i || 0
     end
 
     # e.g.: "coin-price:your-source-id"

@@ -97,28 +97,28 @@ describe CoinPrice::Fetch do
       it 'caches values in Redis' do
         fetch.values
 
-        expect(CoinPrice.redis.get(fetch.cache_key_value(bases[0], quotes[0]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_value(bases[0], quotes[0]))).to \
           eq(values[bases[0]][quotes[0]].to_s)
-        expect(CoinPrice.redis.get(fetch.cache_key_value(bases[0], quotes[1]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_value(bases[0], quotes[1]))).to \
           eq(values[bases[0]][quotes[1]].to_s)
 
-        expect(CoinPrice.redis.get(fetch.cache_key_value(bases[1], quotes[0]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_value(bases[1], quotes[0]))).to \
           eq(values[bases[1]][quotes[0]].to_s)
-        expect(CoinPrice.redis.get(fetch.cache_key_value(bases[1], quotes[1]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_value(bases[1], quotes[1]))).to \
           eq(values[bases[1]][quotes[1]].to_s)
       end
 
       it 'saves timestamps in Redis' do
         fetch.values
 
-        expect(CoinPrice.redis.get(fetch.cache_key_timestamp(bases[0], quotes[0]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_timestamp(bases[0], quotes[0]))).to \
           eq(timestamp.to_s)
-        expect(CoinPrice.redis.get(fetch.cache_key_timestamp(bases[0], quotes[1]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_timestamp(bases[0], quotes[1]))).to \
           eq(timestamp.to_s)
 
-        expect(CoinPrice.redis.get(fetch.cache_key_timestamp(bases[1], quotes[0]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_timestamp(bases[1], quotes[0]))).to \
           eq(timestamp.to_s)
-        expect(CoinPrice.redis.get(fetch.cache_key_timestamp(bases[1], quotes[1]))).to \
+        expect(CoinPrice.cache.get(fetch.cache_key_timestamp(bases[1], quotes[1]))).to \
           eq(timestamp.to_s)
       end
     end
@@ -126,14 +126,14 @@ describe CoinPrice::Fetch do
 
   describe '#values=' do
     it 'writes values to Redis for each base/quote pair' do
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_value(bases[0], quotes[0]), values[bases[0]][quotes[0]]).once
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_value(bases[0], quotes[1]), values[bases[0]][quotes[1]]).once
 
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_value(bases[1], quotes[0]), values[bases[1]][quotes[0]]).once
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_value(bases[1], quotes[1]), values[bases[1]][quotes[1]]).once
 
       fetch.values = values
@@ -142,25 +142,25 @@ describe CoinPrice::Fetch do
 
   describe '#timestamps' do
     it 'reads timestamps from Redis for each base/quote pair' do
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:get).with(fetch.cache_key_timestamp(bases[0], quotes[0])).once
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:get).with(fetch.cache_key_timestamp(bases[0], quotes[1])).once
 
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:get).with(fetch.cache_key_timestamp(bases[1], quotes[0])).once
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:get).with(fetch.cache_key_timestamp(bases[1], quotes[1])).once
 
       fetch.timestamps
     end
 
     it 'returns timestamps read from Redis' do
-      CoinPrice.redis.set(fetch.cache_key_timestamp(bases[0], quotes[0]), timestamp)
-      CoinPrice.redis.set(fetch.cache_key_timestamp(bases[0], quotes[1]), timestamp)
+      CoinPrice.cache.set(fetch.cache_key_timestamp(bases[0], quotes[0]), timestamp)
+      CoinPrice.cache.set(fetch.cache_key_timestamp(bases[0], quotes[1]), timestamp)
 
-      CoinPrice.redis.set(fetch.cache_key_timestamp(bases[1], quotes[0]), timestamp)
-      CoinPrice.redis.set(fetch.cache_key_timestamp(bases[1], quotes[1]), timestamp)
+      CoinPrice.cache.set(fetch.cache_key_timestamp(bases[1], quotes[0]), timestamp)
+      CoinPrice.cache.set(fetch.cache_key_timestamp(bases[1], quotes[1]), timestamp)
 
       expect(fetch.timestamps).to eq(timestamps)
     end
@@ -168,14 +168,14 @@ describe CoinPrice::Fetch do
 
   describe '#timestamps=' do
     it 'writes the same timestamp to Redis for each base/quote pair' do
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_timestamp(bases[0], quotes[0]), timestamp).once
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_timestamp(bases[0], quotes[1]), timestamp).once
 
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_timestamp(bases[1], quotes[0]), timestamp).once
-      expect(CoinPrice.redis).to \
+      expect(CoinPrice.cache).to \
         receive(:set).with(fetch.cache_key_timestamp(bases[1], quotes[1]), timestamp).once
 
       fetch.timestamps = timestamp
@@ -213,22 +213,22 @@ describe CoinPrice::Fetch do
 
     context 'when no cached values is missing' do
       before do
-        CoinPrice.redis.set(fetch.cache_key_value(bases[0], quotes[0]), values[bases[0]][quotes[0]])
-        CoinPrice.redis.set(fetch.cache_key_value(bases[0], quotes[1]), values[bases[0]][quotes[1]])
+        CoinPrice.cache.set(fetch.cache_key_value(bases[0], quotes[0]), values[bases[0]][quotes[0]])
+        CoinPrice.cache.set(fetch.cache_key_value(bases[0], quotes[1]), values[bases[0]][quotes[1]])
 
-        CoinPrice.redis.set(fetch.cache_key_value(bases[1], quotes[0]), values[bases[1]][quotes[0]])
-        CoinPrice.redis.set(fetch.cache_key_value(bases[1], quotes[1]), values[bases[1]][quotes[1]])
+        CoinPrice.cache.set(fetch.cache_key_value(bases[1], quotes[0]), values[bases[1]][quotes[0]])
+        CoinPrice.cache.set(fetch.cache_key_value(bases[1], quotes[1]), values[bases[1]][quotes[1]])
       end
 
       it 'reads values from Redis for each base/quote pair' do
-        expect(CoinPrice.redis).to \
+        expect(CoinPrice.cache).to \
           receive(:get).with(fetch.cache_key_value(bases[0], quotes[0])).once.and_call_original
-        expect(CoinPrice.redis).to \
+        expect(CoinPrice.cache).to \
           receive(:get).with(fetch.cache_key_value(bases[0], quotes[1])).once.and_call_original
 
-        expect(CoinPrice.redis).to \
+        expect(CoinPrice.cache).to \
           receive(:get).with(fetch.cache_key_value(bases[1], quotes[0])).once.and_call_original
-        expect(CoinPrice.redis).to \
+        expect(CoinPrice.cache).to \
           receive(:get).with(fetch.cache_key_value(bases[1], quotes[1])).once.and_call_original
 
         fetch.read_cached_values

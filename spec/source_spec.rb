@@ -27,24 +27,24 @@ describe CoinPrice::Source do
       allow(source).to receive(:cache_key_requests_count).with(any_args).and_return(cache_key_requests_count)
     end
 
-    it 'calls CoinPrice.redis.incrby' do
-      expect(CoinPrice.redis).to receive(:incrby).with(cache_key_requests_count, number).once
+    it 'calls CoinPrice.cache.incrby' do
+      expect(CoinPrice.cache).to receive(:incrby).with(cache_key_requests_count, number).once
 
       source.incr_requests_count(number)
     end
 
     it 'increments in Redis the number of requests performed on a date' do
-      expect(CoinPrice.redis.get(cache_key_requests_count)).to eq(nil)
+      expect(CoinPrice.cache.get(cache_key_requests_count)).to eq(nil)
 
       source.incr_requests_count(1)
-      expect(CoinPrice.redis.get(cache_key_requests_count)).to eq('1')
+      expect(CoinPrice.cache.get(cache_key_requests_count)).to eq('1')
 
       source.incr_requests_count(1)
       source.incr_requests_count(1)
-      expect(CoinPrice.redis.get(cache_key_requests_count)).to eq('3')
+      expect(CoinPrice.cache.get(cache_key_requests_count)).to eq('3')
 
       source.incr_requests_count(5)
-      expect(CoinPrice.redis.get(cache_key_requests_count)).to eq('8')
+      expect(CoinPrice.cache.get(cache_key_requests_count)).to eq('8')
     end
   end
 
@@ -59,11 +59,11 @@ describe CoinPrice::Source do
       let(:zero) { 0 }
 
       before do
-        allow_any_instance_of(Redis).to receive(:get).with(cache_key_requests_count).and_return(nil)
+        allow_any_instance_of(CoinPrice::Cache).to receive(:get).with(cache_key_requests_count).and_return(nil)
       end
 
-      it 'calls CoinPrice.redis.get' do
-        expect(CoinPrice.redis).to receive(:get).with(cache_key_requests_count).once
+      it 'calls CoinPrice.cache.get' do
+        expect(CoinPrice.cache).to receive(:get).with(cache_key_requests_count).once
 
         source.requests_count
       end
@@ -77,11 +77,11 @@ describe CoinPrice::Source do
       let(:count) { 8 }
 
       before do
-        allow_any_instance_of(Redis).to receive(:get).with(cache_key_requests_count).and_return(count)
+        allow_any_instance_of(CoinPrice::Cache).to receive(:get).with(cache_key_requests_count).and_return(count)
       end
 
-      it 'calls CoinPrice.redis.get' do
-        expect(CoinPrice.redis).to receive(:get).with(cache_key_requests_count).once
+      it 'calls CoinPrice.cache.get' do
+        expect(CoinPrice.cache).to receive(:get).with(cache_key_requests_count).once
 
         source.requests_count
       end

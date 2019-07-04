@@ -26,6 +26,7 @@ module CoinPrice
     attr_reader :local
 
     def initialize
+      @mutex = Mutex.new
       @local = {}
     end
 
@@ -33,7 +34,9 @@ module CoinPrice
       if CoinPrice.config.redis_enabled
         CoinPrice.redis.get(key)
       else
-        @local[key.to_s]
+        @mutex.synchronize do
+          @local[key.to_s]
+        end
       end
     end
 
@@ -41,7 +44,9 @@ module CoinPrice
       if CoinPrice.config.redis_enabled
         CoinPrice.redis.set(key, value)
       else
-        @local[key.to_s] = value.to_s
+        @mutex.synchronize do
+          @local[key.to_s] = value.to_s
+        end
       end
     end
 
@@ -49,7 +54,9 @@ module CoinPrice
       if CoinPrice.config.redis_enabled
         CoinPrice.redis.incrby(key, number)
       else
-        @local[key.to_s] = (@local[key.to_s].to_i + number.to_i).to_s
+        @mutex.synchronize do
+          @local[key.to_s] = (@local[key.to_s].to_i + number.to_i).to_s
+        end
       end
     end
   end

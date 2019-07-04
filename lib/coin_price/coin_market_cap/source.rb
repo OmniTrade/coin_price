@@ -31,23 +31,24 @@ module CoinPrice
       end
 
       def fetch_listings(bases, quotes)
-        responses = {}
-        quotes.each do |quote|
+        responses = request_listings(quotes)
+
+        bases.product(quotes).each_with_object({}) do |pair, result|
+          base, quote = pair
+          data = find_coin(base, quote, responses)
+
+          result[base] ||= {}
+          result[base][quote] = find_value(base, quote, data)
+        end
+      end
+
+      def request_listings(quotes)
+        quotes.each_with_object({}) do |quote, responses|
           sleep CoinMarketCap.config.wait_between_requests
 
           responses[quote] = API.request(API.url_listings(quote))
           incr_requests_count
         end
-
-        result = {}
-        bases.each do |base|
-          result[base] = {}
-          quotes.each do |quote|
-            data = find_coin(base, quote, responses)
-            result[base][quote] = find_value(base, quote, data)
-          end
-        end
-        result
       end
 
       def find_value(base, quote, data)

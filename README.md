@@ -2,8 +2,8 @@ CoinPrice
 =========
 
 CoinPrice fetch cryptocurrency latest prices from a Source API and cache results
-into an in-memory hash or into Redis. Price values are returned as BigDecimal
-and timestamps as Integer Unix time.
+into an in-memory hash or Redis. Price values are returned as BigDecimal and
+timestamps as Integer Unix time.
 
 __NOTE__: Coinpaprika is currently set as the default price Source, but there
 are more sources available and CoinPrice is extensible by adding more Sources.
@@ -15,7 +15,7 @@ Build and install the gem locally:
 
 ```sh
 gem build coin_price.gemspec
-gem install coin_price-2.1.2.gem
+gem install coin_price-2.1.3.gem
 ```
 
 Or install it from `rubygems.org` in your terminal:
@@ -46,7 +46,7 @@ Configure
 `CoinPrice` supports configuration with the `.configure` method, e.g.:
 
 ```ruby
-# Example: setting up to use Redis.
+# For example, setting up to use Redis instead of local in-memory hash.
 CoinPrice.configure do |config|
   config.redis_enabled = true
   config.redis_url = 'redis://localhost:6379/0'
@@ -249,7 +249,7 @@ List of configuration values:
 - `wait_weekday_multiplier`: multiplier to apply to `wait` when it a weekday (Monday to Friday) (defaults to `1`)
 - `wait_weekend_multiplier`: multiplier to apply to `wait` when it a weekend (Saturday and Sunday) (defaults to `1`)
 
-How to add a new source
+How to add a new Source
 -----------------------
 
 * Create a new module at `lib/coin_price/your_new_source` and implement a

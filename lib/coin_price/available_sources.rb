@@ -1,6 +1,6 @@
 module CoinPrice
   AVAILABLE_SOURCES = {
-    'coinmarketcap' => CoinPrice::CoinMarketCap::Source,
-    'coinpaprika' => CoinPrice::Coinpaprika::Source
+    'coinpaprika' => CoinPrice::Coinpaprika::Source,
+    'coinmarketcap' => CoinPrice::CoinMarketCap::Source
   }
 end

@@ -5,8 +5,8 @@ CoinPrice fetch cryptocurrency latest prices from a Source API and cache results
 into an in-memory hash or into Redis. Price values are returned as BigDecimal
 and timestamps as Integer Unix time.
 
-__NOTE__: CoinMarketCap is currently set as the default price Source, but
-CoinPrice is extensible by adding more Sources.
+__NOTE__: Coinpaprika is currently set as the default price Source, but there
+are more sources available and CoinPrice is extensible by adding more Sources.
 
 Install
 -------
@@ -58,7 +58,7 @@ List of configuration values:
 - `redis_enabled`: whether or not Redis should be used to cache values (defaults to `false`)
 - `redis_url`: the Redis URL to cache values if enabled (defaults to `'redis://localhost:6379/0'`)
 - `cache_key_prefix`: a custom prefix to be used in hash or Redis keys (defaults to an empty string)
-- `default_source`: the default price Source to be used when none is specified (defaults to `'coinmarketcap'`)
+- `default_source`: the default price Source to be used when none is specified (defaults to `'coinpaprika'`)
 
 (See `Config` class at `lib/coin_price/config.rb` for the up to date list of
 configuration values)
@@ -67,6 +67,22 @@ __NOTE__: Each price Source may have its own configuration.
 
 Price Sources
 -------------
+
+### Coinpaprika
+
+- ID: `'coinpaprika'`
+- Name: Coinpaprika
+- Website: https://coinpaprika.com
+
+`CoinPrice::Coinpaprika` supports configuration with the `.configure` method.
+
+List of configuration values:
+
+- `wait_between_requests`: delay in seconds between retrying a request (defaults to `1`)
+- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
+
+(See `Config` class at `lib/coin_price/coinpaprika/config.rb` for more
+Coinpaprika configuration values)
 
 ### CoinMarketCap
 
@@ -100,17 +116,17 @@ Get latest price
 ----------------
 
 ```ruby
-# Latest BTC price quoted in USD from CoinMarketCap
-CoinPrice.value('BTC', 'USD', 'coinmarketcap')
-# => 0.118503219133e5
+# Latest BTC price quoted in USD from Coinpaprika
+CoinPrice.value('BTC', 'USD', 'coinpaprika')
+# => 0.1122965353095e5
 
-# CoinMarketCap is currently set as the default source
+# Coinpaprika is currently set as the default source
 
 CoinPrice.value('BTC', 'USD')
-# => 0.118503219133e5
+# => 0.1122965353095e5
 
 CoinPrice.value('LTC', 'BTC')
-# => 0.103566820683796e-1
+# => 0.1056364e-1
 ```
 
 Get many latest prices
@@ -121,24 +137,24 @@ Get many latest prices
 CoinPrice.values(['BTC', 'ETH' , 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 # => {
 #   "BTC" => {
-#     "USD" => 0.118499825249e5,
+#     "USD" => 0.1122965353095e5,
 #     "BTC" => 0.1e1,
-#     "ETH" => 0.39987345861561e2
+#     "ETH" => 0.3849240929e2
 #   },
 #   "ETH" => {
-#     "USD" => 0.296343312355e3,
-#     "BTC" => 0.250079113393039e-1,
+#     "USD" => 0.29173683167e3,
+#     "BTC" => 0.2600259e-1,
 #     "ETH" => 0.1e1
 #   },
 #   "LTC" => {
-#     "USD" => 0.122730016464e3,
-#     "BTC" => 0.10356978688037e-1,
-#     "ETH" => 0.414148088879352e0
+#     "USD" => 0.11851911903e3,
+#     "BTC" => 0.1056364e-1,
+#     "ETH" => 0.40625353e0
 #   },
 #   "XRP" => {
-#     "USD" => 0.397052008421e0,
-#     "BTC" => 0.33506548012766e-4,
-#     "ETH" => 0.133983792401348e-2
+#     "USD" => 0.3834478e0,
+#     "BTC" => 0.3418e-4,
+#     "ETH" => 0.131436e-2
 #   }
 # }
 ```
@@ -150,22 +166,22 @@ All fetched prices are stored into an in-memory hash or Redis and can be used
 instead of sending another request to the API:
 
 ```ruby
-CoinPrice.value('BTC', 'USD', 'coinmarketcap', from_cache: true)
-# => 0.118499825249e5
+CoinPrice.value('BTC', 'USD', 'coinpaprika', from_cache: true)
+# => 0.1122965353095e5
 
-CoinPrice.timestamp('BTC', 'USD', 'coinmarketcap')
-# => 1562250411
+CoinPrice.timestamp('BTC', 'USD', 'coinpaprika')
+# => 1562352560
 
-CoinPrice.values(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'], 'coinmarketcap', from_cache: true)
+CoinPrice.values(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'], 'coinpaprika', from_cache: true)
 # Yields the same previous result for many latest prices
 
-CoinPrice.timestamps(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'], 'coinmarketcap')
+CoinPrice.timestamps(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'], 'coinpaprika')
 # Yields the same hash structure as the previous result for many latest prices,
 # but with the timestamps instead of price values
 
 # Number of requests performed today
-CoinPrice.requests_count('coinmarketcap')
-# => 6
+CoinPrice.requests_count('coinpaprika')
+# => 4
 ```
 
 ### Keys and data
@@ -177,20 +193,20 @@ Cache keys of in-memory hash or Redis follow the pattern:
 Example:
 
 ```ruby
-CoinPrice.cache.get('coin-price:coinmarketcap:value:BTC:USD')
-# => "0.118499825249e5"
-CoinPrice.cache.get('coin-price:coinmarketcap:timestamp:BTC:USD')
-# => "1562250411"
+CoinPrice.cache.get('coin-price:coinpaprika:value:BTC:USD')
+# => "0.1122965353095e5"
+CoinPrice.cache.get('coin-price:coinpaprika:timestamp:BTC:USD')
+# => "1562352560"
 ```
 
 Or in Redis:
 
 ```sh
 $ redis-cli
-> get coin-price:coinmarketcap:value:BTC:USD
-> "0.118499825249e5"
-> get coin-price:coinmarketcap:timestamp:BTC:USD
-> "1562250411"
+> get coin-price:coinpaprika:value:BTC:USD
+> "0.1122965353095e5"
+> get coin-price:coinpaprika:timestamp:BTC:USD
+> "1562352560"
 ```
 
 There is also a requests count at:
@@ -199,16 +215,16 @@ There is also a requests count at:
 Example:
 
 ```ruby
-CoinPrice.cache.get('coin-price:coinmarketcap:requests-count:2019-07-04')
-# => "6"
+CoinPrice.cache.get('coin-price:coinpaprika:requests-count:2019-07-05')
+# => "4"
 ```
 
 Or in Redis:
 
 ```sh
 $ redis-cli
-> get coin-price:coinmarketcap:requests-count:2019-07-04
-> "6"
+> get coin-price:coinpaprika:requests-count:2019-07-05
+> "4"
 ```
 
 Refresher
@@ -251,7 +267,7 @@ How to add a new source
 Optionally implement a `Config` class for you module and whichever class is
 needed for it to work.
 
-(See `CoinPrice::CoinMarketCap` module for an example)
+(See `CoinPrice::Coinpaprika` module for an example)
 
 Tests
 -----

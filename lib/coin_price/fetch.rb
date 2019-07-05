@@ -31,14 +31,11 @@ module CoinPrice
     end
 
     def timestamps
-      result = {}
-      bases.each do |base|
-        result[base] = {}
-        quotes.each do |quote|
-          result[base][quote] = CoinPrice.cache.get(cache_key_timestamp(base, quote)).to_i || 0
-        end
+      bases.product(quotes).each_with_object({}) do |pair, result|
+        base, quote = pair
+        result[base] ||= {}
+        result[base][quote] = CoinPrice.cache.get(cache_key_timestamp(base, quote)).to_i
       end
-      result
     end
 
     def timestamps=(new_timestamp)
@@ -58,16 +55,13 @@ module CoinPrice
     end
 
     def read_cached_values
-      result = {}
-      bases.each do |base|
-        result[base] = {}
-        quotes.each do |quote|
-          result[base][quote] = \
-            CoinPrice.cache.get(cache_key_value(base, quote))&.to_d ||
-            (raise CoinPrice::CacheError, "#{base}/#{quote}: #{cache_key_value(base, quote)}")
-        end
+      bases.product(quotes).each_with_object({}) do |pair, result|
+        base, quote = pair
+        result[base] ||= {}
+        result[base][quote] = \
+          CoinPrice.cache.get(cache_key_value(base, quote))&.to_d ||
+          (raise CoinPrice::CacheError, "#{base}/#{quote}: #{cache_key_value(base, quote)}")
       end
-      result
     end
   end
 end

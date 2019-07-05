@@ -20,7 +20,7 @@ module CoinPrice
                   :default_source
 
     def initialize
-      @redis_enabled = true
+      @redis_enabled = false
       @redis_url = 'redis://localhost:6379/0'
       @cache_key_prefix = ''
       @default_source = 'coinmarketcap'

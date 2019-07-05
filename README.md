@@ -230,8 +230,8 @@ CoinPrice::Refresher.call(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 List of configuration values:
 
 - `wait`: delay in seconds to wait until the next refresh (defaults to `120`)
-- `wait_weekday_multiplier`: multiplier to apply to `wait` when it a weekday (Monday to Friday)
-- `wait_weekend_multiplier`: multiplier to apply to `wait` when it a weekend (Saturday and Sunday)
+- `wait_weekday_multiplier`: multiplier to apply to `wait` when it a weekday (Monday to Friday) (defaults to `1`)
+- `wait_weekend_multiplier`: multiplier to apply to `wait` when it a weekend (Saturday and Sunday) (defaults to `1`)
 
 How to add a new source
 -----------------------

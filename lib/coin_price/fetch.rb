@@ -13,12 +13,7 @@ module CoinPrice
       if options[:from_cache]
         read_cached_values
       else
-        fetched_values = source.values(bases, quotes)
-
-        self.values = fetched_values
-        self.timestamps = Time.now.to_i
-
-        fetched_values
+        fetch_values
       end
     end
 
@@ -61,6 +56,13 @@ module CoinPrice
         result[base][quote] = \
           CoinPrice.cache.get(cache_key_value(base, quote))&.to_d ||
           (raise CoinPrice::CacheError, "#{base}/#{quote}: #{cache_key_value(base, quote)}")
+      end
+    end
+
+    def fetch_values
+      source.values(bases, quotes).tap do |new_values|
+        self.values = new_values
+        self.timestamps = Time.now.to_i
       end
     end
   end

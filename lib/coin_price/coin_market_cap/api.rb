@@ -50,7 +50,7 @@ module CoinPrice
             raise
           rescue StandardError => e
             if (retries += 1) < CoinMarketCap.config.max_request_retries
-              sleep 1
+              sleep CoinMarketCap.config.wait_between_requests
               retry
             end
             raise CoinPrice::RequestError, e.message

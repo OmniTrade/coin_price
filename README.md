@@ -15,7 +15,7 @@ Build and install the gem locally:
 
 ```sh
 gem build coin_price.gemspec
-gem install coin_price-2.1.1.gem
+gem install coin_price-2.1.2.gem
 ```
 
 Or install it from `rubygems.org` in your terminal:

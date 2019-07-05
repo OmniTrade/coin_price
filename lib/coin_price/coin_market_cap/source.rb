@@ -53,12 +53,12 @@ module CoinPrice
 
       def find_value(base, quote, data)
         data.dig('quote', quote, 'price')&.to_d ||
-          data.dig('quote', API::CODE_ID[quote].to_s, 'price')&.to_d ||
+          data.dig('quote', API::COIN_ID[quote].to_s, 'price')&.to_d ||
           (raise CoinPrice::ValueNotFoundError, "#{base}/#{quote}")
       end
 
       def find_coin(base, quote, responses)
-        responses[quote]&.dig('data')&.find { |item| item&.dig('id') == API::CODE_ID[base] } ||
+        responses[quote]&.dig('data')&.find { |item| item&.dig('id') == API::COIN_ID[base] } ||
           (raise CoinPrice::ValueNotFoundError, "#{base}/#{quote}")
       end
     end

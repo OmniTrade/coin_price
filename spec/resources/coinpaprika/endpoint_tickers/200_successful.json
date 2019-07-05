@@ -1,0 +1,137 @@
+[
+    {
+        "beta_value": 0.898726,
+        "circulating_supply": 17800150,
+        "id": "btc-bitcoin",
+        "last_updated": "2019-07-05T17:50:40Z",
+        "max_supply": 21000000,
+        "name": "Bitcoin",
+        "quotes": {
+            "BTC": {
+                "ath_date": null,
+                "ath_price": null,
+                "market_cap": 17800150,
+                "market_cap_change_24h": 0.01,
+                "percent_change_12h": 0,
+                "percent_change_1h": 0,
+                "percent_change_1y": 0,
+                "percent_change_24h": 0,
+                "percent_change_30d": 0,
+                "percent_change_7d": 0,
+                "percent_from_price_ath": null,
+                "price": 1,
+                "volume_24h": 1934785.9942031,
+                "volume_24h_change_24h": -8.47
+            },
+            "USD": {
+                "ath_date": "2017-12-17T12:19:00Z",
+                "ath_price": 20089,
+                "market_cap": 200595058127,
+                "market_cap_change_24h": -4.99,
+                "percent_change_12h": 0.65,
+                "percent_change_1h": 0.29,
+                "percent_change_1y": 67.52,
+                "percent_change_24h": -5,
+                "percent_change_30d": 44.22,
+                "percent_change_7d": -5.49,
+                "percent_from_price_ath": -43.77,
+                "price": 11269.29032211,
+                "volume_24h": 21803665079.827,
+                "volume_24h_change_24h": -13.05
+            }
+        },
+        "rank": 1,
+        "symbol": "BTC",
+        "total_supply": 17800150
+    },
+    {
+        "beta_value": 1.21233,
+        "circulating_supply": 106775009,
+        "id": "eth-ethereum",
+        "last_updated": "2019-07-05T17:50:40Z",
+        "max_supply": 0,
+        "name": "Ethereum",
+        "quotes": {
+            "BTC": {
+                "ath_date": "2017-06-18T05:24:00Z",
+                "ath_price": 0.156357,
+                "market_cap": 2761665,
+                "market_cap_change_24h": 3.59,
+                "percent_change_12h": 0.69,
+                "percent_change_1h": -0.13,
+                "percent_change_1y": -64.27,
+                "percent_change_24h": 3.57,
+                "percent_change_30d": -18.07,
+                "percent_change_7d": 0.04,
+                "percent_from_price_ath": -83.48,
+                "price": 0.02586434,
+                "volume_24h": 661465.05186854,
+                "volume_24h_change_24h": 1.79
+            },
+            "USD": {
+                "ath_date": "2018-01-13T21:04:00Z",
+                "ath_price": 1432.88,
+                "market_cap": 31092904207,
+                "market_cap_change_24h": -1.62,
+                "percent_change_12h": 1.35,
+                "percent_change_1h": 0.17,
+                "percent_change_1y": -39.13,
+                "percent_change_24h": -1.64,
+                "percent_change_30d": 18.34,
+                "percent_change_7d": -5.22,
+                "percent_from_price_ath": -79.66,
+                "price": 291.20020217,
+                "volume_24h": 7447271294.4737,
+                "volume_24h_change_24h": -3.33
+            }
+        },
+        "rank": 2,
+        "symbol": "ETH",
+        "total_supply": 106774993
+    },
+    {
+        "beta_value": 1.15975,
+        "circulating_supply": 62531341,
+        "id": "ltc-litecoin",
+        "last_updated": "2019-07-05T17:50:40Z",
+        "max_supply": 84000000,
+        "name": "Litecoin",
+        "quotes": {
+            "BTC": {
+                "ath_date": "2013-11-28T11:41:00Z",
+                "ath_price": 0.051951,
+                "market_cap": 657238,
+                "market_cap_change_24h": -0.83,
+                "percent_change_12h": -2.39,
+                "percent_change_1h": -0.55,
+                "percent_change_1y": -17.97,
+                "percent_change_24h": -0.86,
+                "percent_change_30d": -19.94,
+                "percent_change_7d": 4.6,
+                "percent_from_price_ath": -79.77,
+                "price": 0.01051055,
+                "volume_24h": 304837.34798261,
+                "volume_24h_change_24h": -11.16
+            },
+            "USD": {
+                "ath_date": "2017-12-19T04:39:00Z",
+                "ath_price": 375.286,
+                "market_cap": 7399690701,
+                "market_cap_change_24h": -5.82,
+                "percent_change_12h": -1.75,
+                "percent_change_1h": -0.25,
+                "percent_change_1y": 39.44,
+                "percent_change_24h": -5.84,
+                "percent_change_30d": 15.64,
+                "percent_change_7d": -0.9,
+                "percent_from_price_ath": -68.4,
+                "price": 118.33571107,
+                "volume_24h": 3432089123.2348,
+                "volume_24h_change_24h": -15.63
+            }
+        },
+        "rank": 4,
+        "symbol": "LTC",
+        "total_supply": 62531341
+    }
+]

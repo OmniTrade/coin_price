@@ -12,6 +12,12 @@ describe CoinPrice::Cache do
       end
     end
 
+    after do
+      CoinPrice.configure do |config|
+        config.redis_enabled = false
+      end
+    end
+
     describe '#get' do
       it 'calls CoinPrice.redis.get' do
         expect(CoinPrice.redis).to receive(:get).with(key).once
@@ -58,12 +64,6 @@ describe CoinPrice::Cache do
     before do
       CoinPrice.configure do |config|
         config.redis_enabled = false
-      end
-    end
-
-    after do
-      CoinPrice.configure do |config|
-        config.redis_enabled = true
       end
     end
 

@@ -9,8 +9,8 @@ module CoinPrice
       raise NotImplementedError
     end
 
-    # values returns a hash with the price for each base and quote currency pairs,
-    # e.g.:
+    # values returns a hash with the price for each base and quote currency pairs.
+    # Example:
     #
     # values(['BTC', 'ETH', 'LTC'], ['USD', 'BTC'])
     #

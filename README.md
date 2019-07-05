@@ -2,8 +2,8 @@ CoinPrice
 =========
 
 CoinPrice fetch cryptocurrency latest prices from a source API and cache results
-into Redis or local memory. Price values are returned as BigDecimal and
-timestamps as Integer Unix time.
+into an in-memory hash or into Redis. Price values are returned as BigDecimal
+and timestamps as Integer Unix time.
 
 __NOTE__: CoinMarketCap is currently set as the default price Source API, but
 CoinPrice is extensible by adding more Sources.
@@ -46,17 +46,18 @@ Configure
 `CoinPrice` supports configuration with the `.configure` method, e.g.:
 
 ```ruby
+# Example: setting up to use Redis.
 CoinPrice.configure do |config|
+  config.redis_enabled = true
   config.redis_url = 'redis://localhost:6379/0'
 end
 ```
 
 List of configuration values:
 
-- `redis_enabled`: whether or not Redis should be used to cache values
-  (defaults to `true`; and if set to `false` then values will be cached in local memory)
+- `redis_enabled`: whether or not Redis should be used to cache values (defaults to `false`)
 - `redis_url`: the Redis URL to cache values (defaults to `'redis://localhost:6379/0'`)
-- `cache_key_prefix`: a custom prefix to be used in Redis/hash keys (defaults to an empty string)
+- `cache_key_prefix`: a custom prefix to be used in hash or Redis keys (defaults to an empty string)
 - `default_source`: the default price Source to be used when none is specified (defaults to `'coinmarketcap'`)
 
 (See `Config` class at `lib/coin_price/config.rb` for the up to date list of
@@ -145,8 +146,8 @@ CoinPrice.values(['BTC', 'ETH' , 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 Cache
 -----
 
-All fetched prices are stored in Redis or local memory and can be used instead
-of sending another request to the API:
+All fetched prices are stored into an in-memory hash or Redis and can be used
+instead of sending another request to the API:
 
 ```ruby
 CoinPrice.value('BTC', 'USD', 'coinmarketcap', from_cache: true)
@@ -169,11 +170,21 @@ CoinPrice.requests_count('coinmarketcap')
 
 ### Keys and data
 
-Cache keys in Redis/hash follow the pattern:
+Cache keys of in-memory hash or Redis follow the pattern:
 - `coin-price:{source}:value:{base}:{quote}`
 - `coin-price:{source}:timestamp:{base}:{quote}`
 
 Example:
+
+```ruby
+CoinPrice.cache.get('coin-price:coinmarketcap:value:BTC:USD')
+# => "0.118499825249e5"
+CoinPrice.cache.get('coin-price:coinmarketcap:timestamp:BTC:USD')
+# => "1562250411"
+```
+
+Or in Redis:
+
 ```sh
 $ redis-cli
 > get coin-price:coinmarketcap:value:BTC:USD
@@ -186,23 +197,25 @@ There is also a requests count at:
 - `coin-price:{source}:requests-count:{date}`
 
 Example:
+
+```ruby
+CoinPrice.cache.get('coin-price:coinmarketcap:requests-count:2019-07-04')
+# => "6"
+```
+
+Or in Redis:
+
 ```sh
 $ redis-cli
 > get coin-price:coinmarketcap:requests-count:2019-07-04
 > "6"
 ```
 
-When not using Redis, the local in-memory hash can be found at:
-
-```ruby
-CoinPrice.cache.local
-```
-
 Refresher
 ---------
 
-Refresher loops indefinitely and executes `CoinPrice.values` to populate Redis
-or local memory cache with the specified coin prices.
+Refresher loops indefinitely and executes `CoinPrice.values` to populate the
+in-memory hash or Redis with the specified coin prices.
 
 ```ruby
 CoinPrice::Refresher.configure do |config|

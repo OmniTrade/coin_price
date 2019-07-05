@@ -33,7 +33,7 @@ describe CoinPrice::Source do
       source.incr_requests_count(number)
     end
 
-    it 'increments in Redis the number of requests performed on a date' do
+    it 'increments in cache the number of requests performed on a date' do
       expect(CoinPrice.cache.get(cache_key_requests_count)).to eq(nil)
 
       source.incr_requests_count(1)
@@ -86,7 +86,7 @@ describe CoinPrice::Source do
         source.requests_count
       end
 
-      it 'reads from Redis and returns the number of requets performed on a date' do
+      it 'reads from cache and returns the number of requets performed on a date' do
         expect(source.requests_count).to eq(count)
       end
     end

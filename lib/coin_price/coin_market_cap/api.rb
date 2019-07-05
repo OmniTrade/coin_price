@@ -5,7 +5,7 @@ module CoinPrice
       ENDPOINT_CONVERSION = "#{ENDPOINT}/tools/price-conversion"
       ENDPOINT_LISTINGS = "#{ENDPOINT}/cryptocurrency/listings/latest"
 
-      CODE_ID = {
+      COIN_ID = {
         'BTC' => 1,
         'BCH' => 1831,
         'BTG' => 2083,
@@ -21,15 +21,15 @@ module CoinPrice
 
       class << self
         def url_conversion(base, quote)
-          id = "id=#{CODE_ID[base]}"
-          convert = CODE_ID[quote] ? "convert_id=#{CODE_ID[quote]}" : "convert=#{quote}"
+          id = "id=#{COIN_ID[base]}"
+          convert = COIN_ID[quote] ? "convert_id=#{COIN_ID[quote]}" : "convert=#{quote}"
           amount = 'amount=1'
 
           "#{ENDPOINT_CONVERSION}?#{id}&#{convert}&#{amount}"
         end
 
         def url_listings(quote, limit = CoinMarketCap.config.listings_limit)
-          convert = CODE_ID[quote] ? "convert_id=#{CODE_ID[quote]}" : "convert=#{quote}"
+          convert = COIN_ID[quote] ? "convert_id=#{COIN_ID[quote]}" : "convert=#{quote}"
           limit = "limit=#{limit}" # maximum limit is 5_000
 
           "#{ENDPOINT_LISTINGS}?#{convert}&#{limit}"

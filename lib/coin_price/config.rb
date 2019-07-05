@@ -23,7 +23,7 @@ module CoinPrice
       @redis_enabled = false
       @redis_url = 'redis://localhost:6379/0'
       @cache_key_prefix = ''
-      @default_source = 'coinmarketcap'
+      @default_source = 'coinpaprika'
     end
   end
 end

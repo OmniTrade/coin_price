@@ -6,6 +6,7 @@ SimpleCov.start do
 
   add_group 'CoinPrice', 'lib/coin_price'
   add_group 'CoinPrice::Refresher', 'lib/coin_price/refresher'
+  add_group 'CoinPrice::Coinpaprika', 'lib/coin_price/coinpaprika'
   add_group 'CoinPrice::CoinMarketCap', 'lib/coin_price/coin_market_cap'
 end
 

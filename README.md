@@ -1,11 +1,11 @@
 CoinPrice
 =========
 
-CoinPrice fetch cryptocurrency latest prices from a source API and cache results
+CoinPrice fetch cryptocurrency latest prices from a Source API and cache results
 into an in-memory hash or into Redis. Price values are returned as BigDecimal
 and timestamps as Integer Unix time.
 
-__NOTE__: CoinMarketCap is currently set as the default price Source API, but
+__NOTE__: CoinMarketCap is currently set as the default price Source, but
 CoinPrice is extensible by adding more Sources.
 
 Install
@@ -56,7 +56,7 @@ end
 List of configuration values:
 
 - `redis_enabled`: whether or not Redis should be used to cache values (defaults to `false`)
-- `redis_url`: the Redis URL to cache values (defaults to `'redis://localhost:6379/0'`)
+- `redis_url`: the Redis URL to cache values if enabled (defaults to `'redis://localhost:6379/0'`)
 - `cache_key_prefix`: a custom prefix to be used in hash or Redis keys (defaults to an empty string)
 - `default_source`: the default price Source to be used when none is specified (defaults to `'coinmarketcap'`)
 
@@ -227,8 +227,14 @@ CoinPrice::Refresher.call(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 # Done refreshing prices! Sleeping...
 ```
 
-How to add another source
--------------------------
+List of configuration values:
+
+- `wait`: delay in seconds to wait until the next refresh (defaults to `120`)
+- `wait_weekday_multiplier`: multiplier to apply to `wait` when it a weekday (Monday to Friday)
+- `wait_weekend_multiplier`: multiplier to apply to `wait` when it a weekend (Saturday and Sunday)
+
+How to add a new source
+-----------------------
 
 * Create a new module at `lib/coin_price/your_new_source` and implement a
 `Source < CoinPrice::Source` class with the methods `id` and `values`:
@@ -250,7 +256,11 @@ needed for it to work.
 Tests
 -----
 
-Run tests with `bundle exec rspec`
+Run tests with:
+
+```
+bundle exec rspec
+```
 
 Linter
 ------

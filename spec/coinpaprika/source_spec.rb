@@ -32,7 +32,7 @@ describe CoinPrice::Coinpaprika::Source do
             {
               bases.first => {
                 quotes[0] => '11296.37515253'.to_d,
-                quotes[1] => 1.to_d
+                quotes[1] => '1'.to_d
               }
             }
           end

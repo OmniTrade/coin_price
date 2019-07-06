@@ -24,7 +24,7 @@ Or install it from `rubygems.org` in your terminal:
 gem install coin_price
 ```
 
-Or via a `Gemfile`:
+Or via `Gemfile` in your project:
 
 ```Gemfile
 source 'https://rubygems.org'
@@ -34,7 +34,7 @@ ruby '~> 2.5'
 gem 'coin_price', '~> 2.1'
 ```
 
-Require it in your Ruby code and `CoinPrice` module will be available.
+Require it in your Ruby code and `CoinPrice` module will be available:
 
 ```ruby
 require 'coin_price'
@@ -43,10 +43,10 @@ require 'coin_price'
 Configure
 ---------
 
-`CoinPrice` supports configuration with the `.configure` method, e.g.:
+`CoinPrice` supports configuration with the `.configure` method.
 
 ```ruby
-# For example, setting up to use Redis instead of local in-memory hash.
+# For example, setting up to use Redis instead of local in-memory hash
 CoinPrice.configure do |config|
   config.redis_enabled = true
   config.redis_url = 'redis://localhost:6379/0'
@@ -55,65 +55,20 @@ end
 
 List of configuration values:
 
-- `redis_enabled`: whether or not Redis should be used to cache values (defaults to `false`)
-- `redis_url`: the Redis URL to cache values if enabled (defaults to `'redis://localhost:6379/0'`)
-- `cache_key_prefix`: a custom prefix to be used in hash or Redis keys (defaults to an empty string)
-- `default_source`: the default price Source to be used when none is specified (defaults to `'coinpaprika'`)
+- `redis_enabled`: whether or not to use Redis to cache values (defaults to `false`)
+- `redis_url`: Redis URL to cache values if enabled (defaults to `'redis://localhost:6379/0'`)
+- `cache_key_prefix`: custom prefix to be used in hash or Redis keys (defaults to an empty string)
+- `default_source`: default Source to fetch prices from when none is specified (defaults to `'coinpaprika'`)
 
-(See `Config` class at `lib/coin_price/config.rb` for the up to date list of
+(See `Config` class at `lib/coin_price/config.rb` for the up-to-date list of
 configuration values)
 
-__NOTE__: Each price Source may have its own configuration.
+__NOTE__: each Source may have its own configuration.
 
-Price Sources
--------------
+Usage
+-----
 
-### Coinpaprika
-
-- ID: `'coinpaprika'`
-- Name: Coinpaprika
-- Website: https://coinpaprika.com
-
-`CoinPrice::Coinpaprika` supports configuration with the `.configure` method.
-
-List of configuration values:
-
-- `wait_between_requests`: delay in seconds between retrying a request (defaults to `1`)
-- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
-
-(See `Config` class at `lib/coin_price/coinpaprika/config.rb` for more
-Coinpaprika configuration values)
-
-### CoinMarketCap
-
-- ID: `'coinmarketcap'`
-- Name: CoinMarketCap
-- Website: https://coinmarketcap.com
-
-`CoinPrice::CoinMarketCap` supports configuration with the `.configure` method.
-
-Set your CoinMarketCap API Key (required):
-
-```ruby
-CoinPrice::CoinMarketCap.configure do |config|
-  config.api_key = 'Your-CoinMarketCap-API-Key'
-end
-```
-
-List of configuration values:
-
-- `api_key`: your CoinMarketCap API Key (required; defaults to `nil`)
-- `listings_limit`: number of results to return in the listings endpoint
-  (defaults to `200` so it consumes only 1 call credit; max limit is `5000`;
-  see https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest)
-- `wait_between_requests`: delay in seconds between calls to the listings endpoint (defaults to `1`)
-- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
-
-(See `Config` class at `lib/coin_price/coin_market_cap/config.rb` for more
-CoinMarketCap configuration values)
-
-Get latest price
-----------------
+### Get latest price
 
 ```ruby
 # Latest BTC price quoted in USD from Coinpaprika
@@ -129,8 +84,7 @@ CoinPrice.value('LTC', 'BTC')
 # => 0.1056364e-1
 ```
 
-Get many latest prices
-----------------------
+### Get many latest prices
 
 ```ruby
 # List many latest prices at once
@@ -159,8 +113,7 @@ CoinPrice.values(['BTC', 'ETH' , 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 # }
 ```
 
-Cache
------
+### Cache
 
 All fetched prices are stored into an in-memory hash or Redis and can be used
 instead of sending another request to the API:
@@ -186,7 +139,7 @@ CoinPrice.requests_count('coinpaprika')
 
 ### Keys and data
 
-Cache keys of in-memory hash or Redis follow the pattern:
+Cache keys of the in-memory hash or Redis follow the pattern:
 - `coin-price:{source}:value:{base}:{quote}`
 - `coin-price:{source}:timestamp:{base}:{quote}`
 
@@ -227,6 +180,72 @@ $ redis-cli
 > "4"
 ```
 
+Sources
+-------
+
+You can get the up-to-date list of source with:
+
+```ruby
+CoinPrice.sources
+# => {
+#   "coinpaprika" => {
+#     "name" => "Coinpaprika",
+#     "website" => "https://coinpaprika.com/",
+#     "notes" => "",
+#     "class" => CoinPrice::Coinpaprika::Source
+#   },
+#   "coinmarketcap" => {
+#     "name" => "CoinMarketCap",
+#     "website" => "https://coinmarketcap.com/",
+#     "notes" => "API Key is required",
+#     "class" => CoinPrice::CoinMarketCap::Source
+#   }
+# }
+```
+
+### Coinpaprika
+
+- ID: `'coinpaprika'`
+- Name: Coinpaprika
+- Website: https://coinpaprika.com
+
+`CoinPrice::Coinpaprika` supports configuration with the `.configure` method.
+
+List of configuration values:
+
+- `wait_between_requests`: delay in seconds between retrying a request (defaults to `1`)
+- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
+
+(See `Config` class at `lib/coin_price/coinpaprika/config.rb` for Coinpaprika configuration values)
+
+### CoinMarketCap
+
+- ID: `'coinmarketcap'`
+- Name: CoinMarketCap
+- Website: https://coinmarketcap.com
+- Notes: API Key is required
+
+`CoinPrice::CoinMarketCap` supports configuration with the `.configure` method.
+
+Set your CoinMarketCap API Key:
+
+```ruby
+CoinPrice::CoinMarketCap.configure do |config|
+  config.api_key = 'Your-CoinMarketCap-API-Key'
+end
+```
+
+List of configuration values:
+
+- `api_key`: your CoinMarketCap API Key (required; defaults to `nil`)
+- `listings_limit`: number of results to return in the listings endpoint
+  (defaults to `200` so it consumes only 1 call credit; max limit is `5000`;
+  see https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest)
+- `wait_between_requests`: delay in seconds between calls to the listings endpoint (defaults to `1`)
+- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
+
+(See `Config` class at `lib/coin_price/coin_market_cap/config.rb` for CoinMarketCap configuration values)
+
 Refresher
 ---------
 
@@ -246,8 +265,8 @@ CoinPrice::Refresher.call(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
 List of configuration values:
 
 - `wait`: delay in seconds to wait until the next refresh (defaults to `120`)
-- `wait_weekday_multiplier`: multiplier to apply to `wait` when it a weekday (Monday to Friday) (defaults to `1`)
-- `wait_weekend_multiplier`: multiplier to apply to `wait` when it a weekend (Saturday and Sunday) (defaults to `1`)
+- `wait_weekday_multiplier`: multiplier to apply to `wait` on weekdays (Monday to Friday) (defaults to `1`)
+- `wait_weekend_multiplier`: multiplier to apply to `wait` on weekends (Saturday and Sunday) (defaults to `1`)
 
 How to add a new Source
 -----------------------
@@ -257,10 +276,10 @@ How to add a new Source
   - `id` must return a unique string that identifies your Source in the code
   - `values` must receive the params `bases, quotes` which are arrays of
     currency symbols and return a hash with the price values for each base and
-    quote specified.
-* Provide a test suite.
+    quote pair
+* Provide a test suite
 * Add a group in the `SimpleCov` at `spec/spec_helper.rb`
-* Register your new source at `lib/coin_price/available_sources.rb` in the
+* Register your new source class at `lib/coin_price/available_sources.rb` in the
   `AVAILABLE_SOURCES` constant
 * Require it in `lib/coin_price.rb`
 
@@ -280,6 +299,8 @@ bundle exec rspec
 
 Linter
 ------
+
+Check your code style with:
 
 ```sh
 gem install rubocop

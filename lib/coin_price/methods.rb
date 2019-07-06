@@ -11,22 +11,34 @@ module CoinPrice
     end
 
     def values(bases = ['BTC'], quotes = ['USD'], source_id = config.default_source, options = { from_cache: false })
-      source = find_source_klass(source_id)
+      source = find_source_class(source_id)
       Fetch.new(bases, quotes, source, options).values
     end
 
     def timestamps(bases = ['BTC'], quotes = ['USD'], source_id = config.default_source)
-      source = find_source_klass(source_id)
+      source = find_source_class(source_id)
       Fetch.new(bases, quotes, source).timestamps
     end
 
-    def requests_count(source_id = CoinPrice.config.default_source)
-      source = find_source_klass(source_id)
+    def requests_count(source_id = config.default_source)
+      source = find_source_class(source_id)
       source.new.requests_count
     end
 
-    def find_source_klass(id)
-      AVAILABLE_SOURCES[id] || (raise UnknownSourceError, id)
+    def find_source_class(id)
+      sources.dig(id, 'class') || (raise UnknownSourceError, id)
+    end
+
+    def sources
+      @sources ||= AVAILABLE_SOURCES.each_with_object({}) do |source_class, list|
+        source = source_class.new
+        list[source.id] = {
+          'name' => source.name,
+          'website' => source.website,
+          'notes' => source.notes,
+          'class' => source.class
+        }
+      end
     end
 
     def cache_key

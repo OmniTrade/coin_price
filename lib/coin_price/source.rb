@@ -32,13 +32,15 @@ module CoinPrice
       raise NotImplementedError
     end
 
-    # Optional attribute, not in use at the moment.
     def name
-      ''
+      raise NotImplementedError
     end
 
-    # Optional attribute, not in use at the moment.
     def website
+      raise NotImplementedError
+    end
+
+    def notes
       ''
     end
 

@@ -19,6 +19,22 @@ describe CoinPrice::Source do
     end
   end
 
+  describe '#name' do
+    it 'is an abstract method and must be implemented' do
+      expect do
+        source.name
+      end.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe '#website' do
+    it 'is an abstract method and must be implemented' do
+      expect do
+        source.website
+      end.to raise_error(NotImplementedError)
+    end
+  end
+
   describe '#incr_requests_count' do
     let(:cache_key_requests_count) { 'its-cache-key-requests-count' }
     let(:number) { 1 }

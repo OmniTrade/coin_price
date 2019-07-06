@@ -12,12 +12,12 @@ describe CoinPrice::Fetch do
   let(:values) do
     {
       bases[0] => {
-        quotes[0] => 9101.42.to_d,
-        quotes[1] => 1.to_d
+        quotes[0] => '9101.42'.to_d,
+        quotes[1] => '1'.to_d
       },
       bases[1] => {
-        quotes[0] => 202.42.to_d,
-        quotes[1] => 0.022.to_d
+        quotes[0] => '202.42'.to_d,
+        quotes[1] => '0.022'.to_d
       }
     }
   end

@@ -3,16 +3,16 @@ require 'spec_helper'
 describe CoinPrice::Refresher::Runner do
   let(:bases)  { ['XXX', 'YYY'] }
   let(:quotes) { ['AAA', 'XXX'] }
-  let(:source) { 'any-source' }
+  let(:source_id) { 'any-source' }
   class AnySource < CoinPrice::Source; end
-  let(:source_klass) { AnySource }
+  let(:source_class) { AnySource }
 
   let(:runner) do
-    CoinPrice::Refresher::Runner.new(bases, quotes, source)
+    CoinPrice::Refresher::Runner.new(bases, quotes, source_id)
   end
 
   before do
-    allow(CoinPrice).to receive(:find_source_klass).with(source).and_return(source_klass)
+    allow(CoinPrice).to receive(:find_source_class).with(source_id).and_return(source_class)
   end
 
   describe '#wait_seconds' do

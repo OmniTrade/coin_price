@@ -2,7 +2,7 @@ module CoinPrice
   module Refresher
     class Runner
       def initialize(bases, quotes, source_id)
-        source = CoinPrice.find_source_klass(source_id)
+        source = CoinPrice.find_source_class(source_id)
         @fetch = Fetch.new(bases, quotes, source, from_cache: false)
       end
 

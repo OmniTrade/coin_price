@@ -5,7 +5,7 @@ module CoinPrice
     def initialize(bases, quotes, source, options = { from_cache: false })
       @bases = bases.map { |base| base.to_s.upcase }
       @quotes = quotes.map { |quote| quote.to_s.upcase }
-      @source = source.new # klass
+      @source = source.new
       @options = options || {}
     end
 

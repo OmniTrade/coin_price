@@ -6,9 +6,9 @@ describe CoinPrice do
   let(:bases)  { ['XXX', 'YYY'] }
   let(:quotes) { ['AAA', 'XXX'] }
 
-  let(:source) { 'any-source' }
+  let(:source_id) { 'any-source' }
   class AnySource < CoinPrice::Source; end
-  let(:source_klass) { AnySource }
+  let(:source_class) { AnySource }
   let(:options) { { any_option: 'any_value' } }
 
   describe '.value' do
@@ -21,13 +21,13 @@ describe CoinPrice do
     end
 
     it 'calls .values' do
-      expect(CoinPrice).to receive(:values).with([base], [quote], source, options).once
+      expect(CoinPrice).to receive(:values).with([base], [quote], source_id, options).once
 
-      CoinPrice.value(base, quote, source, options)
+      CoinPrice.value(base, quote, source_id, options)
     end
 
     it 'returns the value' do
-      expect(CoinPrice.value(base, quote, source, options)).to eq(result[base][quote])
+      expect(CoinPrice.value(base, quote, source_id, options)).to eq(result[base][quote])
     end
   end
 
@@ -36,44 +36,44 @@ describe CoinPrice do
       let(:result) do
         {
           bases[0] => {
-            quotes[0] => 9101.42.to_d,
-            quotes[1] => 1.to_d
+            quotes[0] => '9101.42'.to_d,
+            quotes[1] => '1'.to_d
           },
           bases[1] => {
-            quotes[0] => 202.42.to_d,
-            quotes[1] => 0.022.to_d
+            quotes[0] => '202.42'.to_d,
+            quotes[1] => '0.022'.to_d
           }
         }
       end
 
       before do
-        allow(CoinPrice).to receive(:find_source_klass).with(source).and_return(source_klass)
+        allow(CoinPrice).to receive(:find_source_class).with(source_id).and_return(source_class)
         allow_any_instance_of(CoinPrice::Fetch).to receive(:values).and_return(result)
       end
 
-      it 'finds the source klass and instance a Fetch' do
-        expect(CoinPrice).to receive(:find_source_klass).with(source).once
-        expect(CoinPrice::Fetch).to receive(:new).with(bases, quotes, source_klass, options).once.and_call_original
+      it 'finds the source class and instance a Fetch' do
+        expect(CoinPrice).to receive(:find_source_class).with(source_id).once
+        expect(CoinPrice::Fetch).to receive(:new).with(bases, quotes, source_class, options).once.and_call_original
 
-        CoinPrice.values(bases, quotes, source, options)
+        CoinPrice.values(bases, quotes, source_id, options)
       end
 
       it 'returns Fetch#values' do
-        expect(CoinPrice.values(bases, quotes, source, options)).to eq(result)
+        expect(CoinPrice.values(bases, quotes, source_id, options)).to eq(result)
       end
     end
 
     context 'when source does not exist' do
-      let(:non_existent_source) { 'non-existent-source' }
+      let(:non_existent_source_id) { 'non-existent-source-id' }
 
       before do
-        allow(CoinPrice::AVAILABLE_SOURCES).to receive(:[]).with(non_existent_source).and_return(nil)
+        allow(CoinPrice.sources).to receive(:dig).with(non_existent_source_id, 'class').and_return(nil)
       end
 
       it 'raises UnknownSourceError' do
         expect do
-          CoinPrice.values(bases, quotes, non_existent_source, options)
-        end.to raise_error(CoinPrice::UnknownSourceError, /#{non_existent_source}/)
+          CoinPrice.values(bases, quotes, non_existent_source_id, options)
+        end.to raise_error(CoinPrice::UnknownSourceError, /#{non_existent_source_id}/)
       end
     end
   end
@@ -88,13 +88,13 @@ describe CoinPrice do
     end
 
     it 'calls .timestamps' do
-      expect(CoinPrice).to receive(:timestamps).with([base], [quote], source).once
+      expect(CoinPrice).to receive(:timestamps).with([base], [quote], source_id).once
 
-      CoinPrice.timestamp(base, quote, source)
+      CoinPrice.timestamp(base, quote, source_id)
     end
 
     it 'returns the timestamp' do
-      expect(CoinPrice.timestamp(base, quote, source)).to eq(result[base][quote])
+      expect(CoinPrice.timestamp(base, quote, source_id)).to eq(result[base][quote])
     end
   end
 
@@ -114,33 +114,33 @@ describe CoinPrice do
       end
 
       before do
-        allow(CoinPrice).to receive(:find_source_klass).with(source).and_return(source_klass)
+        allow(CoinPrice).to receive(:find_source_class).with(source_id).and_return(source_class)
         allow_any_instance_of(CoinPrice::Fetch).to receive(:timestamps).and_return(result)
       end
 
-      it 'finds the source klass and instance a Fetch' do
-        expect(CoinPrice).to receive(:find_source_klass).with(source).once
-        expect(CoinPrice::Fetch).to receive(:new).with(bases, quotes, source_klass).once.and_call_original
+      it 'finds the source class and instance a Fetch' do
+        expect(CoinPrice).to receive(:find_source_class).with(source_id).once
+        expect(CoinPrice::Fetch).to receive(:new).with(bases, quotes, source_class).once.and_call_original
 
-        CoinPrice.timestamps(bases, quotes, source)
+        CoinPrice.timestamps(bases, quotes, source_id)
       end
 
       it 'returns Fetch#timestamps' do
-        expect(CoinPrice.timestamps(bases, quotes, source)).to eq(result)
+        expect(CoinPrice.timestamps(bases, quotes, source_id)).to eq(result)
       end
     end
 
     context 'when source does not exist' do
-      let(:non_existent_source) { 'non-existent-source' }
+      let(:non_existent_source_id) { 'non-existent-source-id' }
 
       before do
-        allow(CoinPrice::AVAILABLE_SOURCES).to receive(:[]).with(non_existent_source).and_return(nil)
+        allow(CoinPrice.sources).to receive(:dig).with(non_existent_source_id, 'class').and_return(nil)
       end
 
       it 'raises UnknownSourceError' do
         expect do
-          CoinPrice.timestamps(bases, quotes, non_existent_source)
-        end.to raise_error(CoinPrice::UnknownSourceError, /#{non_existent_source}/)
+          CoinPrice.timestamps(bases, quotes, non_existent_source_id)
+        end.to raise_error(CoinPrice::UnknownSourceError, /#{non_existent_source_id}/)
       end
     end
   end
@@ -150,51 +150,51 @@ describe CoinPrice do
       let(:result) { 8 }
 
       before do
-        allow(CoinPrice).to receive(:find_source_klass).with(source).and_return(source_klass)
+        allow(CoinPrice).to receive(:find_source_class).with(source_id).and_return(source_class)
         allow_any_instance_of(CoinPrice::Source).to receive(:requests_count).and_return(result)
       end
 
       it 'instances a Source and returns Source#requests_count' do
         expect(CoinPrice::Source).to receive(:new).once.and_call_original
-        expect(CoinPrice.requests_count(source)).to eq(result)
+        expect(CoinPrice.requests_count(source_id)).to eq(result)
       end
     end
 
     context 'when source does not exist' do
-      let(:non_existent_source) { 'non-existent-source' }
+      let(:non_existent_source_id) { 'non-existent-source-id' }
 
       before do
-        allow(CoinPrice::AVAILABLE_SOURCES).to receive(:[]).with(non_existent_source).and_return(nil)
+        allow(CoinPrice.sources).to receive(:dig).with(non_existent_source_id, 'class').and_return(nil)
       end
 
       it 'raises UnknownSourceError' do
         expect do
-          CoinPrice.requests_count(non_existent_source)
-        end.to raise_error(CoinPrice::UnknownSourceError, /#{non_existent_source}/)
+          CoinPrice.requests_count(non_existent_source_id)
+        end.to raise_error(CoinPrice::UnknownSourceError, /#{non_existent_source_id}/)
       end
     end
   end
 
-  describe '.find_source_klass' do
+  describe '.find_source_class' do
     context 'when source exists' do
       before do
-        allow(CoinPrice::AVAILABLE_SOURCES).to receive(:[]).with(source).and_return(source_klass)
+        allow(CoinPrice.sources).to receive(:dig).with(source_id, 'class').and_return(source_class)
       end
 
       it 'returns the Source class' do
-        expect(CoinPrice.find_source_klass(source)).to eq(source_klass)
+        expect(CoinPrice.find_source_class(source_id)).to eq(source_class)
       end
     end
 
     context 'when source does not exist' do
       before do
-        allow(CoinPrice::AVAILABLE_SOURCES).to receive(:[]).with(source).and_return(nil)
+        allow(CoinPrice.sources).to receive(:dig).with(source_id, 'class').and_return(nil)
       end
 
       it 'raises UnknownSourceError' do
         expect do
-          CoinPrice.find_source_klass(source)
-        end.to raise_error(CoinPrice::UnknownSourceError, /#{source}/)
+          CoinPrice.find_source_class(source_id)
+        end.to raise_error(CoinPrice::UnknownSourceError, /#{source_id}/)
       end
     end
   end

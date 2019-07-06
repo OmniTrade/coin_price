@@ -13,6 +13,10 @@ module CoinPrice
         @website ||= 'https://coinmarketcap.com/'
       end
 
+      def notes
+        @notes ||= 'API Key is required'
+      end
+
       def values(bases = ['BTC'], quotes = ['USD'])
         if bases.one? && quotes.one?
           fetch_conversion(bases.first, quotes.first)

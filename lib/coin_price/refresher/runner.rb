@@ -1,7 +1,9 @@
 module CoinPrice
   module Refresher
     class Runner
-      def initialize(bases, quotes, source_id)
+      def initialize(bases, quotes, source_id, options = {})
+        @options = options
+
         source = CoinPrice.find_source_class(source_id)
         @fetch = Fetch.new(bases, quotes, source, from_cache: false)
       end
@@ -20,15 +22,33 @@ module CoinPrice
       end
 
       def wait_seconds
-        (Refresher.config.wait * multiplier).to_i
+        (wait * multiplier).to_i
       end
 
       def multiplier(date = Time.now)
         if date.saturday? || date.sunday?
-          Refresher.config.wait_weekend_multiplier
+          wait_weekend_multiplier
         else
-          Refresher.config.wait_weekday_multiplier
+          wait_weekday_multiplier
         end
+      end
+
+      def wait
+        return @options[:wait].to_i if @options[:wait]
+
+        Refresher.config.wait
+      end
+
+      def wait_weekday_multiplier
+        return @options[:wait_weekday_multiplier].to_f if @options[:wait_weekday_multiplier]
+
+        Refresher.config.wait_weekday_multiplier
+      end
+
+      def wait_weekend_multiplier
+        return @options[:wait_weekend_multiplier].to_f if @options[:wait_weekend_multiplier]
+
+        Refresher.config.wait_weekend_multiplier
       end
     end
   end

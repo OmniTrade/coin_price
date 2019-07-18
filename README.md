@@ -199,6 +199,12 @@ CoinPrice.sources
 #     "website" => "https://coinmarketcap.com/",
 #     "notes" => "API Key is required",
 #     "class" => CoinPrice::CoinMarketCap::Source
+#   },
+#   "ptax" => {
+#     "name" => "PTAX",
+#     "website" => "https://dadosabertos.bcb.gov.br/dataset/taxas-de-cambio-todos-os-boletins-diarios",
+#     "notes" => "Brazil's Central Bank exchange rate for USD/BRL",
+#     "class" => CoinPrice::PTAX::Source
 #   }
 # }
 ```
@@ -245,6 +251,22 @@ List of configuration values:
 - `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
 
 (See `Config` class at `lib/coin_price/coin_market_cap/config.rb` for CoinMarketCap configuration values)
+
+### PTAX
+
+- ID: `'ptax'`
+- Name: PTAX
+- Website: https://dadosabertos.bcb.gov.br/dataset/taxas-de-cambio-todos-os-boletins-diarios
+- Notes: Brazil's Central Bank exchange rate for USD/BRL
+
+`CoinPrice::PTAX` supports configuration with the `.configure` method.
+
+List of configuration values:
+
+- `wait_between_requests`: delay in seconds between retrying a request (defaults to `1`)
+- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
+
+(See `Config` class at `lib/coin_price/ptax/config.rb` for PTAX configuration values)
 
 Refresher
 ---------

@@ -30,9 +30,9 @@ describe CoinPrice::Coinpaprika::Source do
 
           let(:values) do
             {
-              bases.first => {
-                quotes[0] => '11296.37515253'.to_d,
-                quotes[1] => '1'.to_d
+              bases[0] => {
+                quotes[0] => 11296.37515253.to_d,
+                quotes[1] => 1.to_d
               }
             }
           end
@@ -79,7 +79,7 @@ describe CoinPrice::Coinpaprika::Source do
           let(:code) { 200 }
           let(:body_json_filename) { 'with_coin_id_200_successful_without_some_quote.json' }
 
-          it 'raises CoinPrice::RequestError' do
+          it 'raises CoinPrice::ValueNotFoundError' do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::ValueNotFoundError)
@@ -116,16 +116,16 @@ describe CoinPrice::Coinpaprika::Source do
           let(:values) do
             {
               bases[0] => {
-                quotes[0] => '11269.29032211'.to_d,
-                quotes[1] => '1'.to_d
+                quotes[0] => 11269.29032211.to_d,
+                quotes[1] => 1.to_d
               },
               bases[1] => {
-                quotes[0] => '291.20020217'.to_d,
-                quotes[1] => '0.02586434,'.to_d
+                quotes[0] => 291.20020217.to_d,
+                quotes[1] => 0.02586434.to_d
               },
               bases[2] => {
-                quotes[0] => '118.33571107'.to_d,
-                quotes[1] => '0.01051055,'.to_d
+                quotes[0] => 118.33571107.to_d,
+                quotes[1] => 0.01051055.to_d
               }
             }
           end
@@ -188,7 +188,7 @@ describe CoinPrice::Coinpaprika::Source do
           let(:code) { 200 }
           let(:body_json_filename) { '200_successful_without_some_base.json' }
 
-          it 'raises CoinPrice::RequestError' do
+          it 'raises CoinPrice::ValueNotFoundError' do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::ValueNotFoundError)
@@ -199,7 +199,7 @@ describe CoinPrice::Coinpaprika::Source do
           let(:code) { 200 }
           let(:body_json_filename) { '200_successful_without_some_quote.json' }
 
-          it 'raises CoinPrice::RequestError' do
+          it 'raises CoinPrice::ValueNotFoundError' do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::ValueNotFoundError)

@@ -37,7 +37,7 @@ describe CoinPrice::CoinMarketCap::Source do
           let(:body_json_filename) { '200_successful.json' }
 
           let(:values) do
-            { base => { quote => '9216.02631123'.to_d } }
+            { base => { quote => 9216.02631123.to_d } }
           end
 
           it 'fetches and returns the latest price' do
@@ -137,7 +137,7 @@ describe CoinPrice::CoinMarketCap::Source do
           let(:code) { 200 }
           let(:body_json_filename) { '200_without_base_quote_price.json' }
 
-          it 'raises CoinPrice::RequestError' do
+          it 'raises CoinPrice::ValueNotFoundError' do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::ValueNotFoundError, %r{#{base}\/#{quote}})
@@ -219,16 +219,16 @@ describe CoinPrice::CoinMarketCap::Source do
           let(:values) do
             {
               bases[0] => {
-                quotes[0] => '9044.00258585'.to_d,
-                quotes[1] => '1'.to_d
+                quotes[0] => 9044.00258585.to_d,
+                quotes[1] => 1.to_d
               },
               bases[1] => {
-                quotes[0] => '265.767427441'.to_d,
-                quotes[1] => '0.0294259691399273'.to_d
+                quotes[0] => 265.767427441.to_d,
+                quotes[1] => 0.0294259691399273.to_d
               },
               bases[2] => {
-                quotes[0] => '132.813109717'.to_d,
-                quotes[1] => '0.0147281135392233'.to_d
+                quotes[0] => 132.813109717.to_d,
+                quotes[1] => 0.0147281135392233.to_d
               }
             }
           end
@@ -391,7 +391,7 @@ describe CoinPrice::CoinMarketCap::Source do
             ]
           end
 
-          it 'raises CoinPrice::RequestError' do
+          it 'raises CoinPrice::ValueNotFoundError' do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::ValueNotFoundError)
@@ -407,7 +407,7 @@ describe CoinPrice::CoinMarketCap::Source do
             ]
           end
 
-          it 'raises CoinPrice::RequestError' do
+          it 'raises CoinPrice::ValueNotFoundError' do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::ValueNotFoundError)

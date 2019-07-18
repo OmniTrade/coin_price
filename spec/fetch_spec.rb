@@ -186,20 +186,20 @@ describe CoinPrice::Fetch do
     let(:base) { 'XXX' }
     let(:quote) { 'YYY' }
 
-    it {
+    it do
       expect(fetch.cache_key_value(base, quote)).to \
         eq("#{fetch.source.cache_key}:value:#{base}:#{quote}")
-    }
+    end
   end
 
   describe '#cache_key_timestamp' do
     let(:base) { 'XXX' }
     let(:quote) { 'YYY' }
 
-    it {
+    it do
       expect(fetch.cache_key_timestamp(base, quote)).to \
         eq("#{fetch.source.cache_key}:timestamp:#{base}:#{quote}")
-    }
+    end
   end
 
   describe '#read_cached_values' do

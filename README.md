@@ -183,7 +183,7 @@ $ redis-cli
 Sources
 -------
 
-You can get the up-to-date list of source with:
+You can get the up-to-date list of sources with:
 
 ```ruby
 CoinPrice.sources
@@ -272,14 +272,14 @@ Refresher
 ---------
 
 Refresher loops indefinitely and executes `CoinPrice.values` to populate the
-in-memory hash or Redis with the specified coin prices.
+in-memory hash or Redis with the specified coin prices and source.
 
 ```ruby
 CoinPrice::Refresher.configure do |config|
   config.wait = 60 # seconds
 end
 
-CoinPrice::Refresher.call(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'])
+CoinPrice::Refresher.call(['BTC', 'ETH', 'LTC', 'XRP'], ['USD', 'BTC', 'ETH'], 'coinpaprika')
 # Awake! Refreshing prices...
 # Done refreshing prices! Sleeping...
 ```

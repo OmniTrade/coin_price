@@ -22,6 +22,8 @@ module CoinPrice
     end
   end
 
+  # Cache holds an in-memory hash where price values and timestamps are stored.
+  # If CoinPrice.config.redis_enabled is true, then it uses Redis instead.
   class Cache
     attr_reader :local
 

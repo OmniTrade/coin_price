@@ -1,10 +1,11 @@
 module CoinPrice
   # Source is where we can fetch cryptocurrency latest prices from.
-  # By inheriting this class, you must strictly implement methods `id` and `values`.
+  # By inheriting this class, you must strictly implement methods id, values
+  # name and website.
   class Source
     # id is a string that identifies a Source in the code.
-    # You must register this id in `CoinPrice::AVAILABLE_SOURCES` along with
-    # its class in order to use a Source via `CoinPrice` methods.
+    # You must register this id in CoinPrice::AVAILABLE_SOURCES along with
+    # its class in order to use a Source via CoinPrice methods.
     def id
       raise NotImplementedError
     end

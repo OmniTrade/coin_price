@@ -29,6 +29,7 @@ module CoinPrice
       sources.dig(id.to_s, 'class') || (raise UnknownSourceError, id)
     end
 
+    # sources returns a hash with all available price Sources.
     def sources
       @sources ||= AVAILABLE_SOURCES.each_with_object({}) do |source_class, list|
         source = source_class.new

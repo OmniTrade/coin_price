@@ -1,17 +1,15 @@
 require 'spec_helper'
 
-describe CoinPrice::Coinpaprika::Source do
-  let(:source) { CoinPrice::Coinpaprika::Source.new }
+describe CoinPrice::Omnitrade::Source do
+  let(:source) { CoinPrice::Omnitrade::Source.new }
 
-  before do
-    CoinPrice::Coinpaprika.configure do |config|
-      config.wait_between_requests = 0
-      config.max_request_retries = 0
-    end
+  CoinPrice::Omnitrade.configure do |config|
+    config.wait_between_requests = 0
+    config.max_request_retries = 0
   end
 
   describe '#values' do
-    let(:url_tickers) { CoinPrice::Coinpaprika::API.url_tickers(bases, quotes) }
+    let(:url_tickers) { CoinPrice::Omnitrade::API.url_tickers(bases, quotes) }
     let(:code) { 'defined by each sub test' }
     let(:body_json_filename) { 'defined by each sub test' }
     let(:body) do
@@ -20,26 +18,25 @@ describe CoinPrice::Coinpaprika::Source do
     end
 
     before do
-      allow(CoinPrice::Coinpaprika::API).to \
+      allow(CoinPrice::Omnitrade::API).to \
         receive(:send_request)
         .with(url_tickers, any_args)
         .and_return(code: code, body: body)
     end
 
-    context 'when there is only one base' do
+    context 'when there is only one base and one quote' do
       let(:bases)  { ['BTC'] }
-      let(:quotes) { ['USD', 'BTC'] }
+      let(:quotes) { ['BRL'] }
 
-      describe 'requests to url_tickers with coin_id' do
+      describe 'requests to url_tickers with coin_id pair' do
         describe 'successful (200)' do
           let(:code) { 200 }
-          let(:body_json_filename) { 'with_coin_id_200_successful.json' }
+          let(:body_json_filename) { '200_successful_with_one_base_one_quote.json' }
 
           let(:values) do
             {
               bases[0] => {
-                quotes[0] => 11296.37515253.to_d,
-                quotes[1] => 1.to_d
+                quotes[0] => 43304.43.to_d
               }
             }
           end
@@ -62,7 +59,7 @@ describe CoinPrice::Coinpaprika::Source do
 
         describe 'too many requests (429)' do
           let(:code) { 429 }
-          let(:body_json_filename) { 'with_coin_id_429_too_many_requests.json' }
+          let(:body_json_filename) { '429_too_many_requests.json' }
 
           it 'raises CoinPrice::RequestError' do
             expect do
@@ -82,23 +79,12 @@ describe CoinPrice::Coinpaprika::Source do
           end
         end
 
-        describe 'could not find price value for base/quote in response' do
+        describe 'any StandardError occurred in CoinPrice::Omnitrade::API' do
           let(:code) { 200 }
-          let(:body_json_filename) { 'with_coin_id_200_successful_without_some_quote.json' }
-
-          it 'raises CoinPrice::ValueNotFoundError' do
-            expect do
-              source.values(bases, quotes)
-            end.to raise_error(CoinPrice::ValueNotFoundError)
-          end
-        end
-
-        describe 'any StandardError occurred in CoinPrice::Coinpaprika::API' do
-          let(:code) { 200 }
-          let(:body_json_filename) { 'with_coin_id_200_successful.json' }
+          let(:body_json_filename) { '200_successful_with_one_base_one_quote.json' }
 
           before do
-            allow(CoinPrice::Coinpaprika::API).to \
+            allow(CoinPrice::Omnitrade::API).to \
               receive(:send_request).and_raise(StandardError)
           end
 
@@ -111,28 +97,24 @@ describe CoinPrice::Coinpaprika::Source do
       end
     end
 
-    context 'when there are many bases' do
-      let(:bases)  { ['BTC', 'ETH', 'LTC'] }
-      let(:quotes) { ['USD', 'BTC'] }
+    context 'when there are many bases and many quotes' do
+      let(:bases)  { ['ETH', 'LTC'] }
+      let(:quotes) { ['BTC', 'BRL'] }
 
       describe 'requests to url_tickers' do
         describe 'successful (200)' do
           let(:code) { 200 }
-          let(:body_json_filename) { '200_successful.json' }
+          let(:body_json_filename) { '200_successful_with_many_bases_and_quotes.json' }
 
           let(:values) do
             {
               bases[0] => {
-                quotes[0] => 11269.29032211.to_d,
-                quotes[1] => 1.to_d
+                quotes[0] => 0.0187.to_d,
+                quotes[1] => 808.to_d
               },
               bases[1] => {
-                quotes[0] => 291.20020217.to_d,
-                quotes[1] => 0.02586434.to_d
-              },
-              bases[2] => {
-                quotes[0] => 118.33571107.to_d,
-                quotes[1] => 0.01051055.to_d
+                quotes[0] => 0.0071.to_d,
+                quotes[1] => 316.to_d
               }
             }
           end
@@ -153,7 +135,7 @@ describe CoinPrice::Coinpaprika::Source do
           end
         end
 
-        describe 'at least one too many requests (429)' do
+        describe 'too many requests (429)' do
           let(:code) { 429 }
           let(:body_json_filename) { '429_too_many_requests.json' }
 
@@ -175,12 +157,12 @@ describe CoinPrice::Coinpaprika::Source do
           end
         end
 
-        describe 'any StandardError occurred Coinpaprika::API' do
+        describe 'any StandardError occurred in CoinPrice::Omnitrade::API' do
           let(:code) { 200 }
-          let(:body_json_filename) { '200_successful.json' }
+          let(:body_json_filename) { '200_successful_with_many_bases_and_quotes.json' }
 
           before do
-            allow(CoinPrice::Coinpaprika::API).to \
+            allow(CoinPrice::Omnitrade::API).to \
               receive(:send_request).and_raise(StandardError)
           end
 
@@ -188,28 +170,6 @@ describe CoinPrice::Coinpaprika::Source do
             expect do
               source.values(bases, quotes)
             end.to raise_error(CoinPrice::RequestError)
-          end
-        end
-
-        describe 'at least one base not found for base/quote' do
-          let(:code) { 200 }
-          let(:body_json_filename) { '200_successful_without_some_base.json' }
-
-          it 'raises CoinPrice::ValueNotFoundError' do
-            expect do
-              source.values(bases, quotes)
-            end.to raise_error(CoinPrice::ValueNotFoundError)
-          end
-        end
-
-        describe 'at least one quote not found for base/quote' do
-          let(:code) { 200 }
-          let(:body_json_filename) { '200_successful_without_some_quote.json' }
-
-          it 'raises CoinPrice::ValueNotFoundError' do
-            expect do
-              source.values(bases, quotes)
-            end.to raise_error(CoinPrice::ValueNotFoundError)
           end
         end
       end

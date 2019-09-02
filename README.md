@@ -137,7 +137,7 @@ CoinPrice.requests_count('coinpaprika')
 # => 4
 ```
 
-### Keys and data
+__Keys and data__
 
 Cache keys of the in-memory hash or Redis follow the pattern:
 - `coin-price:{source}:value:{base}:{quote}`
@@ -205,6 +205,12 @@ CoinPrice.sources
 #     "website" => "https://dadosabertos.bcb.gov.br/dataset/taxas-de-cambio-todos-os-boletins-diarios",
 #     "notes" => "Brazil's Central Bank exchange rate for USD/BRL",
 #     "class" => CoinPrice::PTAX::Source
+#   },
+#   "omnitrade" => {
+#     "name" => "Omnitrade",
+#     "website" => "https://omnitrade.io/",
+#     "notes" => "",
+#     "class" => CoinPrice::Omnitrade::Source
 #   }
 # }
 ```
@@ -267,6 +273,21 @@ List of configuration values:
 - `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
 
 (See `Config` class at `lib/coin_price/ptax/config.rb` for PTAX configuration values)
+
+### Omnitrade
+
+- ID: `'omnitrade'`
+- Name: Omnitrade
+- Website: https://omnitrade.io
+
+`CoinPrice::Omnitrade` supports configuration with the `.configure` method.
+
+List of configuration values:
+
+- `wait_between_requests`: delay in seconds between retrying a request (defaults to `1`)
+- `max_request_retries`: number of retries before considering a request failed (defaults to `3`)
+
+(See `Config` class at `lib/coin_price/omnitrade/config.rb` for Omnitrade configuration values)
 
 Refresher
 ---------

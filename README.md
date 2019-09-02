@@ -15,7 +15,7 @@ Build and install the gem locally:
 
 ```sh
 gem build coin_price.gemspec
-gem install coin_price-2.1.6.gem
+gem install coin_price-2.1.7.gem
 ```
 
 Or install it from `rubygems.org` in your terminal:
@@ -345,8 +345,6 @@ Linter
 
 Check your code style with:
 
-```sh
-gem install rubocop
-
-rubocop
+```
+bundle exec rubocop
 ```

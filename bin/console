@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/coin_price.rb'
+
+require 'pry'
+
+Pry.start

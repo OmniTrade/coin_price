@@ -9,6 +9,7 @@ SimpleCov.start do
   add_group 'CoinPrice::Coinpaprika', 'lib/coin_price/coinpaprika'
   add_group 'CoinPrice::CoinMarketCap', 'lib/coin_price/coin_market_cap'
   add_group 'CoinPrice::PTAX', 'lib/coin_price/ptax'
+  add_group 'CoinPrice::Omnitrade', 'lib/coin_price/omnitrade'
 end
 
 require_relative '../lib/coin_price'

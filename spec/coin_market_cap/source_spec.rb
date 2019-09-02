@@ -3,6 +3,13 @@ require 'spec_helper'
 describe CoinPrice::CoinMarketCap::Source do
   let(:source) { CoinPrice::CoinMarketCap::Source.new }
 
+  before do
+    CoinPrice::CoinMarketCap.configure do |config|
+      config.wait_between_requests = 0
+      config.max_request_retries = 0
+    end
+  end
+
   describe '#values' do
     context 'when there is only one base and one quote' do
       let(:base)  { 'BTC' }
@@ -165,12 +172,6 @@ describe CoinPrice::CoinMarketCap::Source do
     context 'when there are many bases and quotes' do
       let(:bases)  { ['BTC', 'ETH', 'LTC'] }
       let(:quotes) { ['USD', 'BTC'] }
-
-      before do
-        CoinPrice::CoinMarketCap.configure do |config|
-          config.wait_between_requests = 0
-        end
-      end
 
       it 'calls private fetch_listings method' do
         expect(source).to receive(:fetch_listings).with(bases, quotes).once

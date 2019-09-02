@@ -16,6 +16,7 @@ require_relative 'coin_price/methods'
 require_relative 'coin_price/coin_market_cap'
 require_relative 'coin_price/coinpaprika'
 require_relative 'coin_price/ptax'
+require_relative 'coin_price/omnitrade'
 
 # Require AVAILABLE_SOURCES constant.
 require_relative 'coin_price/available_sources'
